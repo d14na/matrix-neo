@@ -1,0 +1,53 @@
+$bg: #1c1c1c;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #1c1c1c;
+  color: white;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+
+.sidebar {
+  flex: 0 0 15vw;
+}
+
+.main {
+  flex: 1 1 auto;
+}
+
+.sidebar, .main {
+  display: flex;
+  flex-direction: column;
+
+  div:nth-child(2) { // Room list & Chat
+    flex: 1 1 auto;
+    overflow-y: auto;
+  }
+}
+
+.filter {
+  background: red;
+}
+
+.list {
+  background: purple
+}
+
+.info {
+  background: lime;
+}
+
+.chat {
+  background: blue;
+}

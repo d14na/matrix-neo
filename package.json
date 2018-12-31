@@ -1,0 +1,32 @@
+{
+  "name": "vortex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "f0x",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "babelify": "^10.0.0",
+    "bluebird": "^3.5.3",
+    "budo": "^11.5.0",
+    "create-react-class": "^15.6.3",
+    "debounce": "^1.2.0",
+    "gulp": "^4.0.0",
+    "gulp-cli": "^2.0.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.2",
+    "gulp-util": "^3.0.8",
+    "react": "^16.6.3",
+    "react-dom": "^16.6.3",
+    "webpack": "^4.27.1"
+  },
+  "devDependencies": {
+    "gulp-watch": "^5.0.1"
+  }
+}
