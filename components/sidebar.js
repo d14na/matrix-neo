@@ -65,7 +65,8 @@ let RoomListItem = create({
 
   getInitialState: function() {
     return {
-      filterName: this.props.name.toUpperCase()
+      filterName: this.props.name.toUpperCase(),
+      unread: Math.random() > 0.7
     }
   },
 
@@ -83,8 +84,12 @@ let RoomListItem = create({
     }
     let className = "roomListItem"
     if (this.props.active) {
-      className += " active";
+      className += " active"
     }
+    if (this.state.unread) {
+      className += " unread"
+    }
+    console.log(className)
     return <div className={className} ref={this.setRef}>
       <img id="avatar" src="https://placekitten.com/100/100"/>
       <span id="name">{this.props.name}</span>
