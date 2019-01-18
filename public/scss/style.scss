@@ -13,6 +13,7 @@ html, body {
   padding: 0;
   background: $bg;
   color: white;
+  font-family: monospace;
 }
 
 body {
@@ -79,20 +80,21 @@ body {
 }
 
 .roomListItem {
+  $height: 1.5rem;
   #avatar {
-    line-height: 2rem;
-    height: 2rem;
-    width: 2rem;
+    line-height: $height;
+    height: $height;
+    width: $height;
     vertical-align: middle;
     object-fit: cover;
   }
 
   #name {
-    height: 2rem;
-    line-height: 2rem;
-    font-size: 1.2rem;
-    vertical-align: top;
+    height: $height;
+    line-height: $height;
+    vertical-align: middle;
     padding-left: $spacing;
+    font-size: 1rem;
   }
 }
 
@@ -108,4 +110,13 @@ body {
 
 .input {
   background: $bg1;
+  display: flex;
+
+  input {
+    background: transparent;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    padding: $spacing;
+    font-size: 1.2rem;
+  }
 }

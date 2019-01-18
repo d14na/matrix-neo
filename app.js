@@ -10,6 +10,7 @@ const Sidebar = require('./components/sidebar.js')
 
 const Info = require('./components/info.js')
 const Chat = require('./components/chat.js')
+const Input = require('./components/input.js')
 
 let backend = new Matrix("user", "pass", "http://localhost")
 
@@ -23,6 +24,7 @@ let App = create({
         <div className="main">
           <Info />
           <Chat />
+          <Input />
         </div>
       </>
     )
