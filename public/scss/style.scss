@@ -8,12 +8,27 @@ $bg5: #ffffff;
 
 $spacing: 0.7rem;
 
+@font-face {
+  font-family: "Roboto Mono";
+  src: url(RobotoMono-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Roboto Mono Bold";
+  src: url(RobotoMono-Bold.ttf) format("truetype");
+}
+
 html, body {
   margin: 0;
   padding: 0;
   background: $bg;
   color: white;
-  font-family: monospace;
+  font-family: "Roboto Mono", monospace;
+}
+
+input {
+  // override gtk styling
+  font-family: "Roboto Mono", monospace;
 }
 
 body {
@@ -95,6 +110,8 @@ body {
     vertical-align: middle;
     padding-left: $spacing;
     font-size: 1rem;
+    font-weight: bold;
+    font-family: "Roboto Mono Bold", monospace;
   }
 }
 
