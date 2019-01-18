@@ -24,7 +24,7 @@ let Filter = create({
 
   render: function() {
     return <div className="filter">
-        <input ref={this.inputRef}/>
+        <input ref={this.inputRef} placeholder="Filter roomlist"/>
       </div>
   }
 })
@@ -32,10 +32,27 @@ let Filter = create({
 let List = create({
   displayName: "List",
 
+  getInitialState: function() {
+    return {
+      roomId: 0
+    }
+  },
+
+  select: function(id) {
+    this.setState({roomId: id})
+  },
+
   render: function() {
-    let rooms = ["Test", "aaaa", "Neo", "zzz", "Iris"]
+    let rooms = ["Neo", "version 4", "Codename", "Iris", "Let's All Love Lain"]
     let roomList = rooms.map((room, i) => {
-      return <RoomListItem name={room} filter={this.props.filter} key={i}/>
+      return <RoomListItem
+        active={this.state.roomId == i}
+        name={room}
+        filter={this.props.filter}
+        key={i}
+        roomId={i}
+        select={this.select}
+      />
     })
     return <div className="list">
       {roomList}
@@ -52,12 +69,25 @@ let RoomListItem = create({
     }
   },
 
+  setRef: function(ref) {
+    if (ref == null) {
+      return
+    }
+    this.setState({ref: ref})
+    ref.addEventListener("click", () => {this.props.select(this.props.roomId)})
+  },
+
   render: function() {
     if (this.state.filterName.indexOf(this.props.filter) == -1) {
       return null
     }
-    return <div className="roomListItem">
-      {this.props.name}
+    let className = "roomListItem"
+    if (this.props.active) {
+      className += " active";
+    }
+    return <div className={className} ref={this.setRef}>
+      <img id="avatar" src="https://placekitten.com/100/100"/>
+      <span id="name">{this.props.name}</span>
     </div>
   }
 })
