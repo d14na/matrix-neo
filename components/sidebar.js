@@ -43,7 +43,7 @@ let List = create({
   },
 
   render: function() {
-    let rooms = ["Neo", "version 4", "Codename", "Iris", "Let's All Love Lain"]
+    let rooms = ["Neo", "version 4", "Codename", "Iris", "Let's All Love Lain", "Very long room name abcdefghijklmnopqrstuvwxyz"]
     let roomList = rooms.map((room, i) => {
       return <RoomListItem
         active={this.state.roomId == i}
