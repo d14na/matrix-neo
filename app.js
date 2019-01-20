@@ -15,11 +15,11 @@ const Input = require('./components/input.js')
 
 jdenticon.config = {
     lightness: {
-        color: [0.58, 0.73],
+        color: [0.58, 0.66],
         grayscale: [0.30, 0.90]
     },
     saturation: {
-        color: 0.67,
+        color: 0.66,
         grayscale: 0.00
     },
     backColor: "#00000000"
