@@ -91,7 +91,7 @@ let RoomListItem = create({
     }
     console.log(className)
     return <div className={className} ref={this.setRef}>
-      <img id="avatar" src="https://placekitten.com/100/100"/>
+      <svg id="avatar" data-jdenticon-value={this.props.name}></svg>
       <span id="name">{this.props.name}</span>
     </div>
   }

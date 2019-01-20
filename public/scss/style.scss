@@ -6,7 +6,29 @@ $bg3: #888888;
 $bg4: #ebebeb;
 $bg5: #ffffff;
 
-$amber: #ff9000;
+$amber: #de935f;
+
+/*Old scheme
+$red:    #bd2929;
+$green:  #2dbd29;
+$yellow: #f0c674;
+$blue:   #81a2be;
+$purple: #b294bb;
+$cyan:   #8abeb7;*/
+/* dark
+$red: #a54242;
+$green: #8c9440;
+$yellow: #de935f;
+$blue: #5f819d;
+$purple: #85678f;
+$cyan: #5e8d87;
+*/
+$red: #cc6666;
+$green: #b5bd68;
+$yellow: #f0c674;
+$blue: #81a2be;
+$purple: #b294bb;
+$cyan: #8abeb7;
 
 $spacing: 0.7rem;
 
@@ -53,7 +75,7 @@ body {
   display: flex;
   flex-direction: column;
 
-  div:nth-child(2) { // Room list & Chat
+  & > div:nth-child(2) { // Room list & Chat
     flex: 1 1 auto;
     overflow-y: auto;
   }
@@ -89,7 +111,8 @@ body {
 
 .roomListItem {
   height: 2rem + 2* $spacing;
-  display: flex;
+  display: grid;
+  grid-template-columns: 2rem + 2*$spacing - 0.2rem auto;
   align-items: center;
   width: 100%;
   box-sizing: border-box;
@@ -150,17 +173,35 @@ body {
 
   .events {
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 100%;
   }
 
   .event {
     flex: 0 0 auto;
     display: flex;
 
+    .body {
+      padding: $spacing;
+      padding-top: 0;
+    }
+
+    #name {
+      font-weight: bold;
+      font-family: "Roboto Bold";
+      margin-bottom: $spacing/2;
+    }
+
     #avatar {
       height: 3rem;
       width: 3rem;
       object-fit: cover;
+
+      box-sizing: border-box;
+      object-fit: cover;
+      border: 3px solid lighten($bg0, 10);
+      margin-bottom: $spacing;
     }
   }
 }
@@ -176,4 +217,28 @@ body {
     padding: $spacing;
     font-size: 1.2rem;
   }
+}
+
+.fg-palet-red {
+  color: $red;
+}
+
+.fg-palet-green {
+  color: $green;
+}
+
+.fg-palet-yellow {
+  color: $yellow;
+}
+
+.fg-palet-blue {
+  color: $blue;
+}
+
+.fg-palet-purple {
+  color: $purple;
+}
+
+.fg-palet-cyan {
+  color: $cyan;
 }
