@@ -11,12 +11,24 @@ let chat = create({
       {sender: "Foks", content: "Hello"},
       {sender: "Foks", content: "This is Neo v4"},
       {sender: "Foks", content: "Here are a bunch of test messages\nWithout Multiple\nLines\n:("},
-      {sender: "Foks", content: "Look at these nice colors"},
-      {sender: "Foks", content: "And the font"},
-      {sender: "Foks", content: "And the avatars"}
+      {sender: "Different Foks", content: "Look at these nice colors"},
+      {sender: "Different Foks", content: "And the font"},
+      {sender: "Different Foks", content: "And the avatars"},
+      {sender: "Foks", content: "Every line has it's own message"},
+      {sender: "Foks", content: "But if the sender is the same, we don't repeat the name+image"},
+      {sender: "Foks", content: "Isn't message grouping great?"}
     ]
+    let lastSender = ""
+    let groupCount = 0
+
     let events = tmpEvents.map((event, id) => {
-      return <Event event={event} key={id}/>
+      if (event.sender == lastSender) {
+        groupCount++
+      } else {
+        groupCount = 0
+        lastSender = event.sender;
+      }
+      return <Event event={event} key={id} groupCount={groupCount}/>
     })
     //TODO: replace with something that only renders events in view
     return <div className="chat">
@@ -42,10 +54,21 @@ let Event = create({
   },
 
   render: function() {
-    return <div className="event">
-      <svg id="avatar" data-jdenticon-value={this.props.event.sender}></svg>
+    let className = "event"
+    if (this.props.groupCount > 0) {
+      className += " grouped"
+      if (this.props.groupCount == 1) {
+        className += " first"
+      }
+    }
+    return <div className={className}>
+      {this.props.groupCount == false &&
+        <svg id="avatar" data-jdenticon-value={this.props.event.sender}></svg>
+      }
       <div className="body">
-        <div id="name" className={`fg-palet-${this.state.color}`}>{this.props.event.sender}</div>
+        {this.props.groupCount == false &&
+          <div id="name" className={`fg-palet-${this.state.color}`}>{this.props.event.sender}</div>
+        }
         <div id="content">{this.state.parsedBody}</div>
       </div>
     </div>

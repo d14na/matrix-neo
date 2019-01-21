@@ -169,12 +169,13 @@ body {
     .body {
       padding: $spacing;
       padding-top: 0;
+      padding-bottom: 0;
     }
 
     #name {
       font-weight: bold;
       font-family: "Roboto Bold";
-      margin-bottom: $spacing/2;
+      margin-bottom: 0.3 * $spacing;
     }
 
     #avatar {
@@ -188,6 +189,16 @@ body {
       margin-bottom: $spacing;
     }
   }
+}
+
+.event.grouped .body {
+  padding-bottom: $spacing;
+  margin-left: 3rem;
+}
+
+.event.grouped.first .body {
+  margin-top: -1.2 * $spacing;
+  padding-bottom: 0.3*$spacing;
 }
 
 .input {
