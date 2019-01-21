@@ -25,6 +25,12 @@ jdenticon.config = {
     backColor: "#00000000"
 };
 
+// Things that will get settings:
+// colorscheme
+// avatar tilt
+// incoming/outgoing message alignment (split)
+
+
 let backend = new Matrix("user", "pass", "http://localhost")
 
 let App = create({
