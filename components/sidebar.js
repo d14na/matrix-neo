@@ -89,7 +89,6 @@ let RoomListItem = create({
     if (this.state.unread) {
       className += " unread"
     }
-    console.log(className)
     return <div className={className} ref={this.setRef}>
       <svg id="avatar" data-jdenticon-value={this.props.name}></svg>
       <span id="name">{this.props.name}</span>
