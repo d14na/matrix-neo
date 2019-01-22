@@ -3,9 +3,11 @@ const React = require('react')
 const ReactDOM = require('react-dom')
 const create = require('create-react-class')
 const Promise = require('bluebird')
+const debounce = require('debounce')
 
 let chat = create({
   displayName: "Chat",
+
   render: function() {
     let tmpEvents = [
       {sender: "Foks", content: "Hello"},
@@ -13,7 +15,9 @@ let chat = create({
       {sender: "Foks", content: "Here is one test event\nWith\n Multiple\nLines\n:)"},
       {sender: "Different Foks", content: "Look at these nice colors"},
       {sender: "Different Foks", content: "And the font"},
-      {sender: "Lain", content: "A single message"},
+      {sender: "Lain", content: "image"},
+      {sender: "Lain", content: "image"},
+      {sender: "Lain", content: "image"},
       {sender: "Different Foks", content: "And the avatars"},
       {sender: "Foks", content: "Every line has it's own message"},
       {sender: "Foks", content: "But if the sender is the same, we don't repeat the name+image"},
@@ -83,6 +87,9 @@ let Event = create({
   render: function() {
     //TODO: HTML Sanitize
     let parsedBody = this.props.event.content.split("\n").map((line, id) => {
+      if (line.startsWith("image")) {
+        return <img src="/public/neo.png"/>
+      }
       return <span key={id}>{line}<br/></span>
     })
     return <div className="event">

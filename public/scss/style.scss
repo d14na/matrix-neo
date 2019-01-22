@@ -155,6 +155,7 @@ body {
 .chat {
   padding: $spacing;
   background: $bg0;
+  position: relative;
 
   .events {
     display: flex;
@@ -182,7 +183,11 @@ body {
 
         box-sizing: border-box;
         object-fit: cover;
-        border: 3px solid lighten($bg0, 10);
+        border: 0.2rem solid lighten($bg0, 10);
+        align-self: flex-end;
+
+        position: sticky;
+        bottom: $spacing/4 - 0.2rem;
       }
 
       .col {
@@ -193,6 +198,12 @@ body {
           /* debug */
           //border: 1px solid $red;
           padding: $spacing/4;
+
+          img {
+            max-height: 40vh;
+            max-width: 90%;
+            object-fit: contain;
+          }
         }
 
         .body:hover {
