@@ -88,7 +88,7 @@ let Event = create({
     //TODO: HTML Sanitize
     let parsedBody = this.props.event.content.split("\n").map((line, id) => {
       if (line.startsWith("image")) {
-        return <img src="/public/neo.png"/>
+        return <img src="neo.png"/>
       }
       return <span key={id}>{line}<br/></span>
     })
