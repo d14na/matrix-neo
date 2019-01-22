@@ -24,11 +24,12 @@ let css = gulp.src(cssFiles)
 
 gulp.task('watch', function(cb) {
   budo("app.js", {
-  live: true,
-  port: 3000,
-  browserify: {
-    transform: babelify
-  }
+    live: true,
+    dir: "build",
+    port: 3000,
+    browserify: {
+      transform: babelify
+    }
   }).on('exit', cb)
   gulp.watch(cssFiles, gulp.series(["sass"]))
 })
