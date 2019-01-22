@@ -115,6 +115,7 @@ body {
 
     #avatar {
       border: 3px solid $amber;
+      transform: rotate(-5deg);
     }
 
     #name {
@@ -160,45 +161,48 @@ body {
     flex-direction: column;
     justify-content: flex-end;
     min-height: 100%;
+
+    .eventGroup {
+      padding-top: $spacing;
+      display: grid;
+      grid-template-columns: 3rem auto;
+      grid-template-areas: "avatar content";
+      margin-bottom: $spacing/2;
+
+      #name {
+        font-weight: bold;
+        font-family: "Roboto Bold";
+        margin-bottom: 0.3 * $spacing;
+      }
+
+      #avatar {
+        height: 3rem;
+        width: 3rem;
+        object-fit: cover;
+
+        box-sizing: border-box;
+        object-fit: cover;
+        border: 3px solid lighten($bg0, 10);
+      }
+
+      .col {
+        grid-area: content;
+        padding-left: $spacing * 1.2;
+
+        .body {
+          /* debug */
+          //border: 1px solid $red;
+          padding: $spacing/4;
+        }
+
+        .body:hover {
+          border-radius: 0.5rem;
+          background-color: hsla(0, 100%, 100%, 0.05);
+          transition: 0.1s;
+        }
+      }
+    }
   }
-
-  .event {
-    flex: 0 0 auto;
-    display: flex;
-
-    .body {
-      padding: $spacing;
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-
-    #name {
-      font-weight: bold;
-      font-family: "Roboto Bold";
-      margin-bottom: 0.3 * $spacing;
-    }
-
-    #avatar {
-      height: 3rem;
-      width: 3rem;
-      object-fit: cover;
-
-      box-sizing: border-box;
-      object-fit: cover;
-      border: 3px solid lighten($bg0, 10);
-      margin-bottom: $spacing;
-    }
-  }
-}
-
-.event.grouped .body {
-  padding-bottom: $spacing;
-  margin-left: 3rem;
-}
-
-.event.grouped.first .body {
-  margin-top: -1.2 * $spacing;
-  padding-bottom: 0.3*$spacing;
 }
 
 .input {
