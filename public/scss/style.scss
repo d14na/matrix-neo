@@ -187,6 +187,7 @@ body {
         align-self: flex-end;
 
         position: sticky;
+        //top: $spacing/4 - 0.2rem;
         bottom: $spacing/4 - 0.2rem;
       }
 
@@ -226,6 +227,7 @@ body {
     flex: 1 1 auto;
     padding: $spacing;
     font-size: 1.2rem;
+    border: none;
   }
 }
 
