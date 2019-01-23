@@ -5,67 +5,14 @@ const create = require('create-react-class')
 const Promise = require('bluebird')
 const debounce = require('debounce')
 
-let Filter = create({
-  displayName: "Filter",
-
-  inputRef: function(ref) {
-    if (ref == null) {
-      return
-    }
-    this.setState({
-      inputRef: ref
-    })
-    ref.addEventListener("keyup", debounce(this.input, 20))
-  },
-
-  input: function(e) {
-    this.props.setFilter(e.target.value.toUpperCase())
-  },
-
-  render: function() {
-    return <div className="filter">
-        <input ref={this.inputRef} placeholder="Filter roomlist"/>
-      </div>
-  }
-})
-
-let List = create({
-  displayName: "List",
-
-  getInitialState: function() {
-    return {
-      roomId: 0
-    }
-  },
-
-  select: function(id) {
-    this.setState({roomId: id})
-  },
-
-  render: function() {
-    let rooms = ["Neo", "version 4", "Codename", "Iris", "Let's All Love Lain", "Very long room name abcdefghijklmnopqrstuvwxyz"]
-    let roomList = rooms.map((room, i) => {
-      return <RoomListItem
-        active={this.state.roomId == i}
-        name={room}
-        filter={this.props.filter}
-        key={i}
-        roomId={i}
-        select={this.select}
-      />
-    })
-    return <div className="list">
-      {roomList}
-    </div>
-  }
-})
+const FilterList = require('./filterList.js')
 
 let RoomListItem = create({
   displayName: "RoomListItem",
 
   getInitialState: function() {
     return {
-      filterName: this.props.name.toUpperCase(),
+      filterName: this.props.content.toUpperCase(),
       unread: Math.random() > 0.7
     }
   },
@@ -90,8 +37,8 @@ let RoomListItem = create({
       className += " unread"
     }
     return <div className={className} ref={this.setRef}>
-      <svg id="avatar" data-jdenticon-value={this.props.name}></svg>
-      <span id="name">{this.props.name}</span>
+      <svg id="avatar" data-jdenticon-value={this.props.content}></svg>
+      <span id="name">{this.props.content}</span>
     </div>
   }
 })
@@ -113,9 +60,9 @@ let Sidebar = create({
   },
 
   render: function() {
+    let rooms = ["Neo", "version 4", "Codename", "Iris", "Let's All Love Lain", "Very long room name abcdefghijklmnopqrstuvwxyz"]
     return <div className="sidebar">
-      <Filter setFilter={this.setFilter} />
-      <List filter={this.state.filter} />
+      <FilterList items={rooms} element={RoomListItem}/>
     </div>
   }
 })
