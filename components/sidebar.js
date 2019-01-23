@@ -22,7 +22,7 @@ let RoomListItem = create({
       return
     }
     this.setState({ref: ref})
-    ref.addEventListener("click", () => {this.props.select(this.props.roomId)})
+    ref.addEventListener("click", () => {this.props.select(this.props.listId)})
   },
 
   render: function() {
@@ -30,7 +30,7 @@ let RoomListItem = create({
       return null
     }
     let className = "roomListItem"
-    if (this.props.active) {
+    if (this.props.selected) {
       className += " active"
     }
     if (this.state.unread) {
