@@ -184,11 +184,11 @@ body {
         box-sizing: border-box;
         object-fit: cover;
         border: 0.2rem solid lighten($bg0, 10);
-        align-self: flex-end;
 
         position: sticky;
-        //top: $spacing/4 - 0.2rem;
-        bottom: $spacing/4 - 0.2rem;
+        top: $spacing/4 - 0.2rem;
+        //align-self: flex-end;
+        //bottom: $spacing/4 - 0.2rem;
       }
 
       .col {
