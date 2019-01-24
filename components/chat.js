@@ -4,25 +4,45 @@ const ReactDOM = require('react-dom')
 const create = require('create-react-class')
 const Promise = require('bluebird')
 const debounce = require('debounce')
+const jdenticon = require('jdenticon')
+
+jdenticon.config = {
+    lightness: {
+        color: [0.58, 0.66],
+        grayscale: [0.30, 0.90]
+    },
+    saturation: {
+        color: 0.66,
+        grayscale: 0.00
+    },
+    backColor: "#00000000"
+};
 
 let chat = create({
   displayName: "Chat",
 
+  getSnapshotBeforeUpdate: function(oldProps, oldState) {
+    let ref = this.state.ref
+    if ((ref.scrollHeight - ref.offsetHeight) - ref.scrollTop < 100) { // Less than 100px from bottom
+      return true
+    }
+    return null
+  },
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    let ref = this.state.ref
+    if (snapshot) { // scroll to bottom
+      ref.scrollTop = (ref.scrollHeight - ref.offsetHeight)
+    }
+  },
+
+  setRef: function(ref) {
+    if (ref != null) {
+      this.setState({ref: ref})
+    }
+  },
+
   render: function() {
-    let tmpEvents = [
-      {sender: "Foks", content: "Hello"},
-      {sender: "Foks", content: "This is Neo v4"},
-      {sender: "Foks", content: "Here is one test event\nWith\n Multiple\nLines\n:)"},
-      {sender: "Different Foks", content: "Look at these nice colors"},
-      {sender: "Different Foks", content: "And the font"},
-      {sender: "Lain", content: "image"},
-      {sender: "Lain", content: "image"},
-      {sender: "Lain", content: "image"},
-      {sender: "Different Foks", content: "And the avatars"},
-      {sender: "Foks", content: "Every line has it's own message"},
-      {sender: "Foks", content: "But if the sender is the same, we don't repeat the name+image"},
-      {sender: "Foks", content: "Isn't message grouping great?"}
-    ]
     let messageGroups = {
       current: [],
       groups: [],
@@ -32,7 +52,7 @@ let chat = create({
     // if the sender is the same, add it to the 'current' messageGroup, if not,
     // push the old one to 'groups' and start with a new array.
 
-    tmpEvents.forEach((event, id) => {
+    this.props.events.forEach((event, id) => {
       if (event.sender != messageGroups.sender) {
         messageGroups.sender = event.sender
         if (messageGroups.current.length != 0) {
@@ -49,7 +69,7 @@ let chat = create({
     })
 
     //TODO: replace with something that only renders events in view
-    return <div className="chat">
+    return <div className="chat" ref={this.setRef}>
       <div className="events">
         {events}
       </div>
@@ -67,12 +87,16 @@ let EventGroup = create({
     }
   },
 
+  avatarRef: function(ref) {
+    jdenticon.update(ref, this.props.events[0].sender)
+  },
+
   render: function() {
     let events = this.props.events.map((event, id) => {
       return <Event event={event} key={id}/>
     })
     return <div className="eventGroup">
-      <svg id="avatar" data-jdenticon-value={this.props.events[0].sender}></svg>
+      <svg id="avatar" ref={this.avatarRef} ></svg>
       <div className="col">
         <div id="name" className={`fg-palet-${this.state.color}`}>{this.props.events[0].sender}</div>
         {events}
@@ -88,7 +112,7 @@ let Event = create({
     //TODO: HTML Sanitize
     let parsedBody = this.props.event.content.split("\n").map((line, id) => {
       if (line.startsWith("image")) {
-        return <img src="neo.png"/>
+        return <img key={id} src="neo.png"/>
       }
       return <span key={id}>{line}<br/></span>
     })
