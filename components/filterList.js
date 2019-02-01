@@ -10,7 +10,7 @@ let FilterList = create({
 
   getInitialState: function() {
     return {
-      selection: 0,
+      selection: "room0",
       filter: ""
     }
   },
@@ -37,13 +37,20 @@ let FilterList = create({
   },
 
   render: function() {
-    let items = this.props.items.map((item, id) => {
+    let items = Object.keys(this.props.items).map((itemKey, id) => {
+      let index = id
+      if (this.props.order != undefined) {
+        index = this.props.order.indexOf(itemKey)
+      }
+      let item = this.props.items[itemKey]
+
       let props = {
-        selected:  this.state.selection == id,
+        selected:  this.state.selection == itemKey,
         filter:  this.state.filter,
         content: item,
-        key:     id,
-        listId:  id,
+        key:     itemKey,
+        listId:  itemKey,
+        order:   index,
         select:  this.select,
       }
       return React.createElement(this.props.element, props)

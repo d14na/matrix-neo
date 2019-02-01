@@ -1,6 +1,6 @@
 class Matrix {
   constructor(user, password, homeserver) {
-    this.a = false
+    this.a = 0
     this.events = {
       "roomId": [
         {sender: "Foks", content: "Hello"},
@@ -18,8 +18,26 @@ class Matrix {
       ]
     }
 
-    this.rooms = ["Neo", "version 4", "Codename", "Iris", "Let's All Love Lain", "Very long room name abcdefghijklmnopqrstuvwxyz"]
-    this.a = 0
+    //this.rooms = ["Neo", "version 4", "Codename", "Iris", "Let's All Love Lain", "Very long room name abcdefghijklmnopqrstuvwxyz"]
+    this.rooms = {
+      "room0": {
+        name: "Neo",
+        lastEvent: 10
+      },
+      "room1": {
+        name: "v4: iris",
+        lastEvent: 10
+      },
+      "room2": {
+        name: "groups",
+        lastEvent: 10
+      },
+      "room3": {
+        name: "GUI Demo",
+        lastEvent: 0
+      }
+    }
+    this.updates = true
   }
 
   getEvents(roomId) {
@@ -27,18 +45,31 @@ class Matrix {
   }
 
   getRooms() {
-    console.log("getting rooms", this.rooms)
-    return this.rooms
+    let orderList = Object.keys(this.rooms)
+    orderList.sort((a, b) => {
+      return this.rooms[b].lastEvent - this.rooms[a].lastEvent
+    })
+    return {rooms: this.rooms, order: orderList}
+  }
+
+  hasUpdates() {
+    if (this.updates) {
+      this.updates = false
+      return true
+    }
+    return false
   }
 
   sync() {
-    //this.events.push({sender: "Random person", content: "New message"})
-    if (this.a > 0) {
-      console.log("reordering")
-      this.rooms = ["AAAAAAAAAAA"]
+    let rand = this.lastRand
+    while(rand == this.lastRand) {
+      rand = Math.floor(Math.random()*Object.keys(this.rooms).length)
     }
-    console.log(this.a)
-    this.a++
+    this.lastRand = rand
+    let roomId = `room${rand}`
+    let now = new Date().getMilliseconds()
+    this.rooms[roomId].lastEvent = now
+    this.updates = true
     setTimeout(() => {this.sync()}, 2000)
   }
 }

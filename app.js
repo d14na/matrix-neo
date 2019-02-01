@@ -24,15 +24,31 @@ backend.sync()
 let App = create({
   displayName: "App",
 
+  getInitialState: function() {
+    return this.checkBackend()
+  },
+
+  checkBackend: function() {
+    let returnValue = null
+    if(backend.hasUpdates()) {
+      returnValue = {
+        rooms: backend.getRooms(),
+        events: backend.getEvents()
+      }
+    }
+    setTimeout(() => {
+      this.setState(this.checkBackend())
+    }, 100)
+    return returnValue
+  },
+
   render: function() {
-    console.log("Render function")
-    let rooms = backend.getRooms()
     return (
       <>
-        <Sidebar rooms={rooms}/>
+        <Sidebar rooms={this.state.rooms}/>
         <div className="main">
           <Info />
-          <Chat events={backend.getEvents()}/>
+          <Chat events={this.state.events}/>
           <Input />
         </div>
       </>
