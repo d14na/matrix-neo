@@ -4,6 +4,8 @@
 Currently this is only gui work, no functional API connections yet.  
 The latest build is hosted at [neo.lain.haus/neo](https://neo.lain.haus/neo)  
 
+<img src="https://neo.lain.haus/media/screenshot-iris.png" alt="Screenshot">
+
 ## Vision
 Currently this is just gui work. This will be as protocol-agnostic as possible,
 but the reference backend implementation will be for [Matrix](https://matrix.org)
