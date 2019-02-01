@@ -13,7 +13,8 @@ let RoomListItem = create({
   getInitialState: function() {
     return {
       filterName: this.props.content.toUpperCase(),
-      unread: Math.random() > 0.7
+      unread: Math.random() > 0.7,
+      pos: this.props.listId
     }
   },
 
@@ -36,7 +37,7 @@ let RoomListItem = create({
     if (this.state.unread) {
       className += " unread"
     }
-    return <div className={className} ref={this.setRef}>
+    return <div className={className} ref={this.setRef} style={{transform: `translate3d(0, ${this.props.listId}00%, 0)`}}>
       <svg id="avatar" data-jdenticon-value={this.props.content}></svg>
       <span id="name">{this.props.content}</span>
     </div>
@@ -60,9 +61,8 @@ let Sidebar = create({
   },
 
   render: function() {
-    let rooms = ["Neo", "version 4", "Codename", "Iris", "Let's All Love Lain", "Very long room name abcdefghijklmnopqrstuvwxyz"]
     return <div className="sidebar">
-      <FilterList items={rooms} element={RoomListItem}/>
+      <FilterList items={this.props.rooms} element={RoomListItem}/>
     </div>
   }
 })

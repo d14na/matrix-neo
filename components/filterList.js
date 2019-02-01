@@ -44,7 +44,7 @@ let FilterList = create({
         content: item,
         key:     id,
         listId:  id,
-        select:  this.select
+        select:  this.select,
       }
       return React.createElement(this.props.element, props)
     })
