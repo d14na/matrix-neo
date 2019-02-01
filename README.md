@@ -1,4 +1,5 @@
 # Neo v4: iris
+<a href="https://liberapay.com/f0x/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>  
 
 Currently this is only gui work, no functional API connections yet.  
 The latest build is hosted at [neo.lain.haus/neo](https://neo.lain.haus/neo)  
