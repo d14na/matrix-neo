@@ -6,6 +6,8 @@ const Promise = require('bluebird')
 const debounce = require('debounce')
 const jdenticon = require('jdenticon')
 
+const Matrix = require('./backends/Matrix.js')
+
 jdenticon.config = {
     lightness: {
         color: [0.58, 0.66],
@@ -81,44 +83,28 @@ let EventGroup = create({
   displayName: "EventGroup",
 
   getInitialState: function() {
+    console.log(this.props.events);
     let color = ["red", "green", "yellow", "blue", "purple", "cyan"][Math.floor(Math.random()*6)]
     return {
-      color: color
+      color: color,
+      sender: this.props.events[0].props.event.sender
     }
   },
 
   avatarRef: function(ref) {
-    jdenticon.update(ref, this.props.events[0].sender)
+    jdenticon.update(ref, this.state.sender)
   },
 
   render: function() {
-    let events = this.props.events.map((event, id) => {
-      return <Event event={event} key={id}/>
-    })
+    let events = this.props.events;
+    //let events = this.props.events.map((event, id) => {
+      //return event
+    //})
     return <div className="eventGroup">
       <svg id="avatar" ref={this.avatarRef} ></svg>
       <div className="col">
-        <div id="name" className={`fg-palet-${this.state.color}`}>{this.props.events[0].sender}</div>
+        <div id="name" className={`fg-palet-${this.state.color}`}>{this.state.sender}</div>
         {events}
-      </div>
-    </div>
-  }
-})
-
-let Event = create({
-  displayName: "Event",
-
-  render: function() {
-    //TODO: HTML Sanitize
-    let parsedBody = this.props.event.content.split("\n").map((line, id) => {
-      if (line.startsWith("image")) {
-        return <img key={id} src="neo.png"/>
-      }
-      return <span key={id}>{line}<br/></span>
-    })
-    return <div className="event">
-      <div className="body">
-        {parsedBody}
       </div>
     </div>
   }

@@ -1,20 +1,15 @@
+'use strict'
+const React = require('react')
+const ReactDOM = require('react-dom')
+const defaultValue = require('default-value');
+
+const components = require('../components/backends/Matrix.js');
+
 class Matrix {
   constructor(user, password, homeserver) {
     this.a = 0
     this.events = {
       "roomId": [
-        {sender: "Foks", content: "Hello"},
-        {sender: "Foks", content: "This is Neo v4"},
-        {sender: "Foks", content: "Here is one test event\nWith\n Multiple\nLines\n:)"},
-        {sender: "Different Foks", content: "Look at these nice colors"},
-        {sender: "Different Foks", content: "And the font"},
-        {sender: "Lain", content: "image"},
-        {sender: "Lain", content: "image"},
-        {sender: "Lain", content: "image"},
-        {sender: "Different Foks", content: "And the avatars"},
-        {sender: "Foks", content: "Every line has it's own message"},
-        {sender: "Foks", content: "But if the sender is the same, we don't repeat the name+image"},
-        {sender: "Foks", content: "Isn't message grouping great?"}
       ]
     }
 
@@ -70,7 +65,46 @@ class Matrix {
     let now = new Date().getMilliseconds()
     this.rooms[roomId].lastEvent = now
     this.updates = true
+
+    let event = {
+      content: {
+        body: "Testing m.text",
+        msgtype: "m.text"
+      },
+      event_id: this.fakeEventId(),
+      origin_server_ts: 1432735824653,
+      room_id: "!jEsUZKDJdhlrceRyVU:domain.com",
+      sender: "@example:domain.com",
+      type: "m.room.message",
+      unsigned: {
+        age: 1234
+      }
+    }
+    this.events["roomId"].push(this.getReactEvent(event))
     setTimeout(() => {this.sync()}, 2000)
+  }
+
+  fakeEventId() {
+    let id = ""
+    let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+    for (let i = 0; i < 32; i++) {
+      id += possible.charAt(Math.floor(Math.random() * possible.length))
+    }
+    return id
+  }
+
+  getReactEvent(event) {
+    let msgTypes = {
+      "m.text": components.text
+    }
+    if (event.type == "m.room.message") {
+      let msgtype = event.content.msgtype
+      return React.createElement(
+        defaultValue(msgTypes[msgtype], components.text),
+        {event: event, key: event.event_id}
+      )
+    }
   }
 }
 

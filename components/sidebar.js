@@ -36,7 +36,7 @@ let RoomListItem = create({
     if (this.state.unread) {
       className += " unread"
     }
-    return <div className={className} ref={this.setRef} style={{transform: `translate3d(0, ${this.props.order}00%, 0)`}}>
+    return <div className={className} ref={this.setRef}>
       <svg id="avatar" data-jdenticon-value={this.props.content.name}></svg>
       <span id="name">{this.props.content.name}</span>
     </div>

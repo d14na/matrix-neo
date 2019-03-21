@@ -18,6 +18,7 @@
     "budo": "^11.5.0",
     "create-react-class": "^15.6.3",
     "debounce": "^1.2.0",
+    "default-value": "^1.0.0",
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",

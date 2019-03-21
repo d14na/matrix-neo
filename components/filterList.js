@@ -38,10 +38,6 @@ let FilterList = create({
 
   render: function() {
     let items = Object.keys(this.props.items).map((itemKey, id) => {
-      let index = id
-      if (this.props.order != undefined) {
-        index = this.props.order.indexOf(itemKey)
-      }
       let item = this.props.items[itemKey]
 
       let props = {
@@ -50,7 +46,6 @@ let FilterList = create({
         content: item,
         key:     itemKey,
         listId:  itemKey,
-        order:   index,
         select:  this.select,
       }
       return React.createElement(this.props.element, props)

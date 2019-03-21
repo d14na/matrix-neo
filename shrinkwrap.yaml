@@ -8,6 +8,7 @@ dependencies:
   budo: 11.5.0
   create-react-class: 15.6.3
   debounce: 1.2.0
+  default-value: 1.0.0
   del: 3.0.0
   gulp: 4.0.0
   gulp-babel: 8.0.0
@@ -2789,6 +2790,12 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha1-vLgrqnKtebQmp2cy8aga1t8m1oQ=
+  /default-value/1.0.0:
+    dependencies:
+      es6-promise-try: 0.0.1
+    dev: false
+    resolution:
+      integrity: sha1-jG9SpaEZP+eP3J+G63HRbJdXyDo=
   /define-properties/1.1.3:
     dependencies:
       object-keys: 1.0.12
@@ -3185,6 +3192,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-p96IkUGgWpSwhUQDstCg+/qY87c=
+  /es6-promise-try/0.0.1:
+    dev: false
+    resolution:
+      integrity: sha1-EPFA2tJ0Wc75SZc+XSGgh/cnSyA=
   /es6-promisify/6.0.1:
     dev: false
     resolution:
@@ -9439,6 +9450,7 @@ specifiers:
   budo: ^11.5.0
   create-react-class: ^15.6.3
   debounce: ^1.2.0
+  default-value: ^1.0.0
   del: ^3.0.0
   gulp: ^4.0.0
   gulp-babel: ^8.0.0

@@ -87,7 +87,6 @@ body {
 
 .list {
   background: $bg0;
-  position: relative;
 
   div {
     cursor: pointer;
@@ -95,8 +94,6 @@ body {
 }
 
 .roomListItem {
-  position: absolute;
-  top: 0;
   height: 2rem + 2* $spacing;
   display: grid;
   grid-template-columns: 2rem + 2*$spacing - 0.2rem auto;
