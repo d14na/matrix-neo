@@ -18,7 +18,7 @@ const Input = require('./components/input.js')
 // incoming/outgoing message alignment (split)
 
 
-let backend = new Matrix("user", "pass", "http://localhost")
+let backend = new Matrix("user", "pass", "https://lain.haus")
 backend.sync()
 
 let App = create({
@@ -48,7 +48,7 @@ let App = create({
         <Sidebar rooms={this.state.rooms}/>
         <div className="main">
           <Info />
-          <Chat events={this.state.events}/>
+          <Chat events={this.state.events} backend={backend}/>
           <Input />
         </div>
       </>

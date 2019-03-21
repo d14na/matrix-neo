@@ -5,8 +5,12 @@ const create = require('create-react-class')
 const Promise = require('bluebird')
 const debounce = require('debounce')
 const jdenticon = require('jdenticon')
+const defaultValue = require('default-value')
 
-const Matrix = require('./backends/Matrix.js')
+const elements = {
+  "m.text": require('./events/text.js'),
+  "m.image": require('./events/image.js')
+}
 
 jdenticon.config = {
     lightness: {
@@ -67,7 +71,7 @@ let chat = create({
     messageGroups.groups.push(messageGroups.current)
 
     let events = messageGroups.groups.map((events, id) => {
-      return <EventGroup events={events} key={id}/>
+      return <EventGroup key={id} events={events} backend={this.props.backend}/>
     })
 
     //TODO: replace with something that only renders events in view
@@ -83,11 +87,10 @@ let EventGroup = create({
   displayName: "EventGroup",
 
   getInitialState: function() {
-    console.log(this.props.events);
     let color = ["red", "green", "yellow", "blue", "purple", "cyan"][Math.floor(Math.random()*6)]
     return {
       color: color,
-      sender: this.props.events[0].props.event.sender
+      sender: this.props.events[0].sender
     }
   },
 
@@ -96,10 +99,9 @@ let EventGroup = create({
   },
 
   render: function() {
-    let events = this.props.events;
-    //let events = this.props.events.map((event, id) => {
-      //return event
-    //})
+    let events = this.props.events.map((event, id) => {
+      return getRenderedEvent(event, id, this.props.backend)
+    })
     return <div className="eventGroup">
       <svg id="avatar" ref={this.avatarRef} ></svg>
       <div className="col">
@@ -109,5 +111,12 @@ let EventGroup = create({
     </div>
   }
 })
+
+function getRenderedEvent(event, id, backend) {
+  if (event.type == "m.room.message") {
+    let msgtype = event.content.msgtype;
+    return React.createElement(elements[defaultValue(msgtype, "m.text")], {event: event, key: id, backend: backend})
+  }
+}
 
 module.exports = chat

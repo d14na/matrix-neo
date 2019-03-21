@@ -1,15 +1,45 @@
 'use strict'
 const React = require('react')
 const ReactDOM = require('react-dom')
-const defaultValue = require('default-value');
-
-const components = require('../components/backends/Matrix.js');
+const defaultValue = require('default-value')
 
 class Matrix {
   constructor(user, password, homeserver) {
+    this.user = user;
+    this.password = password;
+    this.homeserver = homeserver;
     this.a = 0
     this.events = {
       "roomId": [
+        {
+          type: "m.room.message",
+          sender: "@f0x:lain.haus",
+          content: {
+            body: "Image caption",
+            info: {
+              size: 1331429,
+              mimetype: "image/png",
+              thumbnail_info: {
+                w: 600,
+                h: 600,
+                mimetype: "image/png",
+                size: 151911
+              },
+              w: 2000,
+              h: 2000,
+              thumbnail_url: "mxc://lain.haus/PnptnVmLprDNICfhCqIIurHZ"
+            },
+            msgtype: "m.image",
+            url: "mxc://lain.haus/MXtCRwxheuSEVsIyHfyUGJNz"
+          },
+          event_id: "$155317808164309EPnWP:lain.haus",
+          origin_server_ts: 1553178081145,
+          unsigned: {
+            age: 587,
+            transaction_id: "m1553178080798.12"
+          },
+          room_id: "!bghqZrxFTiDyEUzunK:disroot.org"
+        }
       ]
     }
 
@@ -35,6 +65,10 @@ class Matrix {
     this.updates = true
   }
 
+  getHS() {
+    return this.homeserver
+  }
+
   getEvents(roomId) {
     return this.events["roomId"]
   }
@@ -53,6 +87,10 @@ class Matrix {
       return true
     }
     return false
+  }
+
+  addEvent(event) {
+    this.events["roomId"].push(event)
   }
 
   sync() {
@@ -80,7 +118,7 @@ class Matrix {
         age: 1234
       }
     }
-    this.events["roomId"].push(this.getReactEvent(event))
+    this.events["roomId"].push(event)
     setTimeout(() => {this.sync()}, 2000)
   }
 
@@ -93,20 +131,6 @@ class Matrix {
     }
     return id
   }
-
-  getReactEvent(event) {
-    let msgTypes = {
-      "m.text": components.text
-    }
-    if (event.type == "m.room.message") {
-      let msgtype = event.content.msgtype
-      return React.createElement(
-        defaultValue(msgTypes[msgtype], components.text),
-        {event: event, key: event.event_id}
-      )
-    }
-  }
 }
-
 
 module.exports = Matrix
