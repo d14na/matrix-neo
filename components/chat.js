@@ -27,8 +27,15 @@ jdenticon.config = {
 let chat = create({
   displayName: "Chat",
 
+  getInitialState: function() {
+    return {
+      ref: null
+    }
+  },
+
   getSnapshotBeforeUpdate: function(oldProps, oldState) {
     let ref = this.state.ref
+    if (ref == null) {return}
     if ((ref.scrollHeight - ref.offsetHeight) - ref.scrollTop < 100) { // Less than 100px from bottom
       return true
     }
@@ -37,6 +44,7 @@ let chat = create({
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     let ref = this.state.ref
+    if (ref == null) {return}
     if (snapshot) { // scroll to bottom
       ref.scrollTop = (ref.scrollHeight - ref.offsetHeight)
     }
@@ -49,6 +57,14 @@ let chat = create({
   },
 
   render: function() {
+    if (this.props.roomId == undefined || this.props.events[this.props.roomId] == undefined) {
+      //empty screen
+      return <div className="chat" ref={this.setRef}>
+        <div className="events">
+        </div>
+      </div>
+    }
+
     let messageGroups = {
       current: [],
       groups: [],
@@ -58,7 +74,7 @@ let chat = create({
     // if the sender is the same, add it to the 'current' messageGroup, if not,
     // push the old one to 'groups' and start with a new array.
 
-    this.props.events.forEach((event, id) => {
+    this.props.events[this.props.roomId].forEach((event, id) => {
       if (event.sender != messageGroups.sender) {
         messageGroups.sender = event.sender
         if (messageGroups.current.length != 0) {
@@ -115,7 +131,7 @@ let EventGroup = create({
 function getRenderedEvent(event, id, backend) {
   if (event.type == "m.room.message") {
     let msgtype = event.content.msgtype;
-    return React.createElement(elements[defaultValue(msgtype, "m.text")], {event: event, key: id, backend: backend})
+    return React.createElement(defaultValue(elements[msgtype], elements["m.text"]), {event: event, key: id, backend: backend})
   }
 }
 

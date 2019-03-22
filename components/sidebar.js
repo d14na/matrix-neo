@@ -4,6 +4,7 @@ const ReactDOM = require('react-dom')
 const create = require('create-react-class')
 const Promise = require('bluebird')
 const debounce = require('debounce')
+const jdenticon = require('jdenticon')
 
 const FilterList = require('./filterList.js')
 
@@ -15,6 +16,10 @@ let RoomListItem = create({
       filterName: this.props.content.name.toUpperCase(),
       unread: Math.random() > 0.7
     }
+  },
+
+  componentDidMount() {
+    jdenticon.update("svg")
   },
 
   setRef: function(ref) {
@@ -61,7 +66,7 @@ let Sidebar = create({
 
   render: function() {
     return <div className="sidebar">
-      <FilterList items={this.props.rooms.rooms} order={this.props.rooms.order} element={RoomListItem}/>
+      <FilterList items={this.props.rooms} element={RoomListItem} callback={(roomId) => {this.props.selectRoom(roomId)}}/>
     </div>
   }
 })

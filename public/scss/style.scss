@@ -48,6 +48,53 @@ body {
   height: 100vh;
   width: 100vw;
   display: flex;
+  justify-content: center;
+}
+
+.loginwrapper {
+  margin-top: -15rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  img {
+    height: 15rem;
+    width: 15rem;
+    text-align: center;
+    align-self: center;
+  }
+}
+
+.login {
+  align-self: center;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+
+  $blue: #5294e2;
+
+  label, input, button {
+    margin: 0.3rem;
+    padding: 0.3rem;
+  }
+
+  label {
+    background: $blue;
+    justify-self: left;
+  }
+
+  input {
+    border: 0.1rem solid $blue;
+    background: transparent;
+    color: white;
+  }
+
+  button {
+    grid-column-start: 2;
+    background: $blue;
+    color: white;
+    justify-self: right;
+    border: none;
+  }
 }
 
 .main {

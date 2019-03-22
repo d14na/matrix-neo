@@ -17,7 +17,7 @@ let FilterList = create({
 
   select: function(id) {
     this.setState({selection: id})
-    //this.props.callback(id)
+    this.props.callback(id)
   },
 
   inputRef: function(ref) {
@@ -37,9 +37,9 @@ let FilterList = create({
   },
 
   render: function() {
-    let items = Object.keys(this.props.items).map((itemKey, id) => {
+    let keys = Object.keys(this.props.items)
+    let items = keys.map((itemKey, id) => {
       let item = this.props.items[itemKey]
-
       let props = {
         selected:  this.state.selection == itemKey,
         filter:  this.state.filter,
