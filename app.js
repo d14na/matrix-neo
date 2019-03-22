@@ -84,7 +84,7 @@ let App = create({
       //Login screen
       return (
         <div className="loginwrapper">
-          <img src="/neo.png"/>
+          <img src="./neo.png"/>
           <div className="login">
             <label htmlFor="user">Username: </label><input type="text" id="user" placeholder="username"/>
             <label htmlFor="pass">Password: </label><input type="password" id="pass"/>
