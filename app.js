@@ -44,6 +44,7 @@ let App = create({
     let user = document.getElementById("user").value
     let pass = document.getElementById("pass").value
     let hs = document.getElementById("hs").value
+    this.setState({apiUrl: hs})
     hs = urllib.parse(hs)
 
     let data = {
@@ -67,7 +68,7 @@ let App = create({
       .then((responseJson) => {
         this.setState({json: responseJson});
         if(responseJson.access_token != undefined) {
-          let backend = new Matrix(responseJson.user_id, responseJson.access_token, "https://"+responseJson.home_server)
+          let backend = new Matrix(responseJson.user_id, responseJson.access_token, this.state.apiUrl)
           this.setState({
             backend: backend
           })
