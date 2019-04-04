@@ -57,12 +57,20 @@ body {
   justify-content: center;
   flex-direction: column;
 
+  input, label, button {
+    font-size: 140%;
+  }
+
   img {
     height: 15rem;
     width: 15rem;
     text-align: center;
     align-self: center;
   }
+}
+
+.error {
+  color: $red;
 }
 
 .login {
@@ -73,8 +81,8 @@ body {
   $blue: #5294e2;
 
   label, input, button {
-    margin: 0.3rem;
-    padding: 0.3rem;
+    margin: 0.3em;
+    padding: 0.3em;
   }
 
   label {
