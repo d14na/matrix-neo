@@ -57,7 +57,7 @@ body {
   justify-content: center;
   flex-direction: column;
 
-  input, label, button {
+  input, label, button, span {
     font-size: 140%;
   }
 
@@ -71,6 +71,7 @@ body {
 
 .error {
   color: $red;
+  font-size: 140%;
 }
 
 .login {
@@ -79,8 +80,9 @@ body {
   grid-template-columns: 1fr 1fr;
 
   $blue: #5294e2;
+  $grey: #999;
 
-  label, input, button {
+  label, input, button, span {
     margin: 0.3em;
     padding: 0.3em;
   }
@@ -88,6 +90,15 @@ body {
   label {
     background: $blue;
     justify-self: left;
+  }
+
+  label.inactive {
+    background: $grey;
+  }
+
+  span {
+    display: inline-block;
+    border: 0.05rem solid $grey;
   }
 
   input {

@@ -11,39 +11,52 @@ let login = create({
   displayName: "Login",
 
   getInitialState: function() {
-    return {error: null}
+    return {
+      error: null,
+      formState: {
+        user: "",
+        pass: "",
+        hs: ""
+      },
+      promptHS: false
+    }
   },
 
   login: function() {
-    let user = document.getElementById("user").value
-    let pass = document.getElementById("pass").value
-
-    let parts = user.split(':')
+    this.setState({error: ""})
+    let parts = this.state.formState.user.split(':')
     if (parts.length != 2) {
-      return this.setState({error: "Please enter a full mxid, like @username:homeserver.tld"})
+      return this.setState({error: "Please enter a full mxid, like username:homeserver.tld"})
     }
 
     let hostname = urllib.parse("https://" + parts[1])
-    getApiServer(hostname).then((hostname) => {
-      hostname.pathname = ""
-      let hs = urllib.format(hostname)
+    getApiServer(hostname).then((hs) => {
       console.log("Using API server", hs)
-      this.setState({apiUrl: hs})
-      //this.login()
+      let formState = this.state.formState
+      formState.user = parts[0]
+      formState.hs = hs
+      this.setState({apiUrl: hs, formState: formState})
+      this.doLogin()
+    }).catch((error) => {
+      console.log("LOGIN ERROR", error)
+      this.setState({error: error})
     })
   },
 
-  login: function() {
+  doLogin: function() {
+    console.log("Logging in")
+    let user = this.state.formState.user
+    let password = this.state.formState.pass
+    let hs = this.state.apiUrl
+
     let data = {
-      user: this.state.user,
-      password: this.state.password,
+      user: user,
+      password: password,
       type: "m.login.password",
       initial_device_display_name: "Neo v4",
     };
 
-    let url = urllib.format(Object.assign(this.state.apiUrl, {
-      pathname: "/_matrix/client/r0/login"
-    }));
+    let url = hs + "/_matrix/client/r0/login"
 
     fetch(url, {
       body: JSON.stringify(data),
@@ -53,34 +66,64 @@ let login = create({
       method: 'POST',
     }).then((response) => response.json())
     .then((responseJson) => {
+      console.log("got access token", responseJson)
       this.setState({json: responseJson});
       if(responseJson.access_token != undefined) {
-        this.props.loginCallback()
+        this.props.callback(user, responseJson.access_token, hs)
       }
     })
     .catch((error) => {
-      console.error(error);
+      console.error(url, error);
     });
   },
 
+  handleUserChange: function(e) {
+    let formState = this.state.formState
+    let user = e.target.value
+    formState.user = e.target.value
+    let parts = user.split(':')
+    if (parts.length == 2) {
+      formState.hs = parts[1]
+    }
+    this.setState({formState: formState})
+  },
+
+  handlePassChange: function(e) {
+    let formState = this.state.formState
+    formState.pass = e.target.value
+    this.setState({formState: formState})
+  },
+
+  handleHsChange: function(e) {
+    let formState = this.state.formState
+    formState.hs = e.target.value
+    this.setState({formState: formState})
+  },
+
   render: function() {
+    let hsActive = "inactive"
+    if (this.state.promptHS) {
+      hsActive = "active"
+    }
     return (
       <div className="loginwrapper">
         <img src="./neo.png"/>
         <div className="error">{this.state.error != null && this.state.error}</div>
         <div className="login">
           <label htmlFor="user">Username: </label>
-          <input type="text" id="user" placeholder="username" defaultValue="f0x:hacklab.fi"/>
+          <input type="text" id="user" placeholder="username" value={this.state.formState["user"]} onChange={this.handleUserChange}/>
 
           <label htmlFor="pass">Password: </label>
-          <input type="password" id="pass"/>
+          <input type="password" id="pass" value={this.state.formState["pass"]} onChange={this.handlePassChange}/>
 
-          {this.state.promptHS &&
+          <label htmlFor="hs" className={hsActive}>Homeserver: </label>
+          {this.state.promptHS ? (
             <>
-              <label htmlFor="hs">Homeserver: </label>
-              <input type="text" id="hs" placeholder="https://lain.haus"/>
+              <input type="text" id="hs" placeholder="https://lain.haus" value={this.state.formState["hs"]} onChange={this.handleHsChange}/>
             </>
-          }
+          ) : (
+            <span>{this.state.formState["hs"]}</span>
+          )}
 
           <button onClick={()=>this.login()}>Log in</button>
         </div>
@@ -94,13 +137,15 @@ function getApiServer(hostname) {
     console.log("Checking for api server from mxid", urllib.format(hostname))
     checkApi(hostname).then(() => {
       // Hostname is a valid api server
-      resolve(hostname)
+      hostname.pathname = ""
+      resolve(urllib.format(hostname))
     }).catch(() => {
       console.log("trying .well-known")
       tryWellKnown(hostname).then((hostname) => {
         console.log("got .well-known host", hostname)
+        resolve(hostname)
       }).catch((err) => {
-        console.log("Fatal error trying to get API host", err)
+        reject("Fatal error trying to get API host")
       })
     })
   })
@@ -131,9 +176,11 @@ function tryWellKnown(host) {
       .then((response) => {
         if (response.status != 200) {
           console.log("no well-known in use")
-          reject()
+          reject("No homeserver found")
         }
         return response
+      }).catch((error) => {
+        reject("can't fetch .well-known")
       })
       .then((response) => response.json())
       .then((json) => {
@@ -144,7 +191,7 @@ function tryWellKnown(host) {
       })
       .catch((err) => {
         console.log("Error in json", err)
-        reject()
+        reject("Error while parsing .well-known")
       })
   })
 }
