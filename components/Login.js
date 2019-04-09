@@ -67,9 +67,11 @@ let login = create({
     }).then((response) => response.json())
     .then((responseJson) => {
       console.log("got access token", responseJson)
-      this.setState({json: responseJson});
+      this.setState({json: responseJson})
       if(responseJson.access_token != undefined) {
-        this.props.callback(user, responseJson.access_token, hs)
+        this.props.callback(responseJson.user_id, responseJson.access_token, hs)
+      } else {
+        this.setState({error: responseJson.error})
       }
     })
     .catch((error) => {

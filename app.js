@@ -42,6 +42,7 @@ let App = create({
   },
 
   loginCallback: function(userId, accessToken, apiUrl) {
+    userId = '@' + userId.replace('@', '')
     let backend = new Matrix(userId, accessToken, apiUrl)
     this.setState({
       backend: backend
