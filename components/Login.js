@@ -18,12 +18,21 @@ let login = create({
         pass: "",
         hs: ""
       },
-      promptHS: false
+      hs: {
+        prompt: false,
+        error: null,
+        valid: false
+      }
     }
   },
 
   login: function() {
     this.setState({error: ""})
+
+    if (this.state.hs.valid) {
+      return this.doLogin()
+    }
+
     let parts = this.state.formState.user.split(':')
     if (parts.length != 2) {
       return this.setState({error: "Please enter a full mxid, like username:homeserver.tld"})
@@ -35,17 +44,19 @@ let login = create({
       let formState = this.state.formState
       formState.user = parts[0]
       formState.hs = hs
-      this.setState({apiUrl: hs, formState: formState})
+      let hsState = Object.assign(this.state.hs, {valid: true})
+      this.setState({apiUrl: hs, formState: formState, hs: hsState})
       this.doLogin()
     }).catch((error) => {
-      console.log("LOGIN ERROR", error)
-      this.setState({error: error})
+      console.log("ERROR fetching homeserver url", error)
+      let hsState = Object.assign(this.state.hs, {error: error, valid: false})
+      this.setState({hs: hsState})
     })
   },
 
   doLogin: function() {
     console.log("Logging in")
-    let user = this.state.formState.user
+    let user = this.state.formState.user.replace('@', '')
     let password = this.state.formState.pass
     let hs = this.state.apiUrl
 
@@ -86,6 +97,8 @@ let login = create({
     let parts = user.split(':')
     if (parts.length == 2) {
       formState.hs = parts[1]
+      let hsState = Object.assign(this.state.hs, {error: null, valid: false})
+      this.setState({hs: hsState})
     }
     this.setState({formState: formState})
   },
@@ -103,28 +116,35 @@ let login = create({
   },
 
   render: function() {
-    let hsActive = "inactive"
-    if (this.state.promptHS) {
-      hsActive = "active"
+    let hsState = "inactive"
+    if (this.state.hs.prompt) {
+      hsState = "active"
     }
+    if (this.state.hs.error != null) {
+      hsState = "error"
+    }
+    if (this.state.hs.valid) {
+      hsState = "validated"
+    }
+
     return (
       <div className="loginwrapper">
         <img src="./neo.png"/>
-        <div className="error">{this.state.error != null && this.state.error}</div>
+        <div className="errorMessage">{this.state.error}</div>
         <div className="login">
           <label htmlFor="user">Username: </label>
-          <input type="text" id="user" placeholder="username" value={this.state.formState["user"]} onChange={this.handleUserChange}/>
+          <input type="text" id="user" placeholder="@user:homeserver.tld" value={this.state.formState["user"]} onChange={this.handleUserChange}/>
 
           <label htmlFor="pass">Password: </label>
-          <input type="password" id="pass" value={this.state.formState["pass"]} onChange={this.handlePassChange}/>
+          <input type="password" id="pass" placeholder="password" value={this.state.formState["pass"]} onChange={this.handlePassChange}/>
 
-          <label htmlFor="hs" className={hsActive}>Homeserver: </label>
-          {this.state.promptHS ? (
+          <label htmlFor="hs" className={hsState}>Homeserver: </label>
+          {this.state.hs.prompt ? (
             <>
               <input type="text" id="hs" placeholder="https://lain.haus" value={this.state.formState["hs"]} onChange={this.handleHsChange}/>
             </>
           ) : (
-            <span>{this.state.formState["hs"]}</span>
+            <span id="hs">{this.state.formState["hs"]}</span>
           )}
 
           <button onClick={()=>this.login()}>Log in</button>

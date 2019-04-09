@@ -6,13 +6,13 @@ $bg3: #888888;
 $bg4: #ebebeb;
 $bg5: #ffffff;
 
-$red: #cc6666;
-$green: #b5bd68;
-$yellow: #f0c674;
-$amber: #de935f;
-$blue: #81a2be;
-$purple: #b294bb;
-$cyan: #8abeb7;
+$red: #e15151;
+$green: #75e151;
+$yellow: #e1da51;
+$amber: #e18151;
+$blue: #5294e2;
+$purple: #df51e1;
+$cyan: #51dfe1;
 
 $spacing: 0.7rem;
 
@@ -69,7 +69,7 @@ body {
   }
 }
 
-.error {
+.errorMessage {
   color: $red;
   font-size: 140%;
 }
@@ -79,7 +79,6 @@ body {
   display: inline-grid;
   grid-template-columns: 1fr 1fr;
 
-  $blue: #5294e2;
   $grey: #999;
 
   label, input, button, span {
@@ -94,6 +93,22 @@ body {
 
   label.inactive {
     background: $grey;
+  }
+
+  label.error {
+    background: $red;
+
+    & ~ input, & ~ span {
+      border-color: $red;
+    }
+  }
+
+  label.validated {
+    background: $green;
+
+    & ~ input, & ~ span {
+      border-color: $green;
+    }
   }
 
   span {
