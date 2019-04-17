@@ -14,17 +14,18 @@ $blue: #81a2be;
 $purple: #b294bb;
 $cyan: #8abeb7;
 
-
 $spacing: 0.7rem;
 
 @font-face {
-  font-family: "Roboto Mono";
-  src: url(RobotoMono-Regular.ttf) format("truetype");
+  font-family: "Open Sans";
+  font-weight: normal;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'), url(OpenSans-Regular.ttf) format("truetype");
 }
 
 @font-face {
-  font-family: "Roboto Mono Bold";
-  src: url(RobotoMono-Bold.ttf) format("truetype");
+  font-family: "Open Sans";
+  font-weight: bold;
+  src: local('Open Sans Bold'), local('OpenSans-Bold'), url(OpenSans-Bold.ttf) format("truetype");
 }
 
 html, body {
@@ -32,12 +33,13 @@ html, body {
   padding: 0;
   background: $bg;
   color: white;
-  font-family: "Roboto Mono", monospace;
+  font-family: "Open Sans";
+  font-size: 110%;
 }
 
 input {
   // override gtk styling
-  font-family: "Roboto Mono", monospace;
+  font-family: "Open Sans", sans-serif;
 }
 
 body {
@@ -205,7 +207,6 @@ body {
     #name {
       color: $amber;
       font-weight: bold;
-      font-family: "Roboto Mono Bold", monospace;
     }
   }
 
@@ -233,7 +234,6 @@ body {
   padding: $spacing;
   color: $amber;
   font-weight: bold;
-  font-family: "Roboto Mono Bold", monospace;
 }
 
 .chat {
@@ -256,7 +256,6 @@ body {
 
       #name {
         font-weight: bold;
-        font-family: "Roboto Bold";
         margin-bottom: 0.3 * $spacing;
       }
 
