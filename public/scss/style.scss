@@ -1,18 +1,21 @@
-$bg:  #1b1b1b;
-$bg0: #2c2c2c;
-$bg1: #353535;
-$bg2: #4b4b4b;
-$bg3: #888888;
-$bg4: #ebebeb;
-$bg5: #ffffff;
+$bg:  hsla(228, 12%, 12%, 1);
+$bg0: hsla(228, 12%, 15%, 1);
+$bg1: hsla(228, 12%, 18%, 1);
+$bg2: hsla(228, 12%, 30%, 1);
+$bg3: hsla(228, 12%, 36%, 1);
+$bg4: hsla(228, 12%, 60%, 1);
+$bg6: hsla(228, 12%, 100%, 1);
 
-$red: #cc6666;
-$green: #b5bd68;
-$yellow: #f0c674;
-$amber: #e18151;
-$blue: #81a2be;
-$purple: #b294bb;
-$cyan: #8abeb7;
+$red: #CC6666;
+$amber: #DE935F;
+$yellow: #F0C674;
+$green: #B5BD68;
+$cyan: #8ABEB7;
+$blue: #81A2BE;
+$purple: #B294BB;
+$brown: #A3685A;
+
+$accent: $blue;
 
 $spacing: 0.7rem;
 
@@ -35,6 +38,30 @@ html, body {
   color: white;
   font-family: "Open Sans";
   font-size: 110%;
+}
+
+.list {
+  background: $bg0;
+}
+
+.roomListItem {
+  background: $bg0;
+
+  &:hover {
+    background: $bg1;
+  }
+
+  &.active {
+    background: $bg1;
+  }
+}
+
+.chat, .info, .input {
+  background: $bg1;
+}
+
+.input {
+  background: $bg2;
 }
 
 input {
@@ -161,7 +188,6 @@ body {
       width: 100%;
       box-sizing: border-box;
       padding: $spacing;
-      background: $bg2;
       border: none;
       color: white;
       font-size: 1rem;
@@ -170,8 +196,6 @@ body {
 }
 
 .list {
-  background: $bg0;
-
   div {
     cursor: pointer;
   }
@@ -184,28 +208,22 @@ body {
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  border-bottom: 1px solid lighten($bg1, 3);
+  //border-bottom: 1px solid lighten($bg1, 3);
   transition: 0.2s;
-  background: $bg0;
-
-  &:hover {
-    background: $bg1;
-  }
 
   &.active {
-    background: $bg1;
 
     #avatar, #name {
       transition: 0.2s;
     }
 
     #avatar {
-      border: 3px solid $amber;
+      border: 3px solid $accent;
       transform: rotate(-5deg);
     }
 
     #name {
-      color: $amber;
+      color: $accent;
       font-weight: bold;
     }
   }
@@ -230,15 +248,13 @@ body {
 }
 
 .info {
-  background: $bg1;
   padding: $spacing;
-  color: $amber;
+  color: $accent;
   font-weight: bold;
 }
 
 .chat {
   padding: $spacing;
-  background: $bg0;
   position: relative;
 
   .events {
@@ -257,6 +273,7 @@ body {
       #name {
         font-weight: bold;
         margin-bottom: 0.3 * $spacing;
+        padding-left: $spacing/2;
       }
 
       #avatar {
@@ -282,6 +299,7 @@ body {
           /* debug */
           //border: 1px solid $red;
           padding: $spacing/4;
+          padding-left: $spacing/2;
 
           img {
             max-height: 40vh;
@@ -291,7 +309,7 @@ body {
         }
 
         .body:hover {
-          border-radius: 0.5rem;
+          border-radius: 0.1rem;
           background-color: hsla(0, 100%, 100%, 0.05);
           transition: 0.1s;
         }
@@ -301,7 +319,6 @@ body {
 }
 
 .input {
-  background: $bg1;
   display: flex;
 
   input {
