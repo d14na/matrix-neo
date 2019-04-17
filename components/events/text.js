@@ -11,13 +11,14 @@ let Event = create({
 
   render: function() {
     let event = this.props.event;
-    // let eventBody = event.content.body.split("\n").map((line, id) => {
-    //   return <span key={id}>{line}<br/></span>
-    // })
-
     let eventBody = riot.sanitize(event.content.body)
 
-    return <div className="event">
+    let eventClass = "event"
+    if (event.local) {
+      eventClass += " local"
+    }
+
+    return <div className={eventClass}>
       <div
         className={this.props.nested ? "nested" : "body"}
         dangerouslySetInnerHTML={{__html: eventBody}}

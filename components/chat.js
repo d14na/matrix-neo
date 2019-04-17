@@ -82,12 +82,14 @@ let chat = create({
     // if the sender is the same, add it to the 'current' messageGroup, if not,
     // push the old one to 'groups' and start with a new array.
 
-    console.log("GROUPING EVENTS", room.timeline.length)
     let events = []
     if (room.timeline.length > 0) {
       room.timeline.forEach((timeline) => {
-        console.log("TIMELINE", timeline);
         let event = timeline.event;
+        if (event.user_id != null) { // localecho messages
+          event.sender = event.user_id
+          event.local = true
+        }
         if (event.sender != messageGroups.sender) {
           messageGroups.sender = event.sender
           if (messageGroups.current.length != 0) {

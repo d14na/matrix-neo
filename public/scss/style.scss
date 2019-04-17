@@ -4,7 +4,7 @@ $bg1: hsla(228, 12%, 18%, 1);
 $bg2: hsla(228, 12%, 30%, 1);
 $bg3: hsla(228, 12%, 36%, 1);
 $bg4: hsla(228, 12%, 60%, 1);
-$bg6: hsla(228, 12%, 100%, 1);
+$bg5: hsla(228, 12%, 100%, 1);
 
 $red: #CC6666;
 $amber: #DE935F;
@@ -294,6 +294,10 @@ body {
       .col {
         grid-area: content;
         padding-left: $spacing * 1.2;
+
+        .local {
+          color: $bg4;
+        }
 
         .body {
           /* debug */

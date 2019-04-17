@@ -72,7 +72,12 @@ let App = create({
       } else if (state == "PREPARED") {
       }
     })
-    client.on("event", (event) => {
+    client.on("Room.localEchoUpdated", (event) => {
+      let rooms = {}
+      client.getRooms().forEach((room) => {
+        rooms[room.roomId] = room
+      })
+      this.setState({rooms: rooms})
     })
     client.startClient()
   },
@@ -88,7 +93,7 @@ let App = create({
         <div className="main">
           <Info />
           <Chat client={this.state.client} roomId={this.state.roomId}/>
-          <Input />
+          <Input client={this.state.client} roomId={this.state.roomId}/>
         </div>
       </>
     )
