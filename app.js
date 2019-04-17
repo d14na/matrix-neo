@@ -51,7 +51,6 @@ let App = create({
       userId: userId
     });
 
-    console.log("CLIENT", client)
     this.setState({
       client: client
     })
@@ -59,9 +58,7 @@ let App = create({
   },
 
   startClient: function(client) {
-    console.log(this.state)
     client.on("sync", (state, prevState, data) => {
-      console.log(state)
       if (state == "ERROR") {
       } else if (state == "SYNCING") {
         let rooms = {}
