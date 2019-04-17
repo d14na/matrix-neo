@@ -4,11 +4,9 @@ const ReactDOM = require('react-dom')
 const create = require('create-react-class')
 const Promise = require('bluebird')
 const urllib = require('url')
-
-const Matrix = require('./backends/matrix.js')
+const sdk = require('matrix-js-sdk')
 
 const Sidebar = require('./components/sidebar.js')
-
 const Login = require('./components/Login.js')
 const Info = require('./components/info.js')
 const Chat = require('./components/chat.js')
@@ -25,33 +23,62 @@ let App = create({
   displayName: "App",
 
   getInitialState: function() {
-    return {rooms: {}, events: {}}
+    return {rooms: []}
   },
 
-  checkBackend: function() {
-    if(this.state.backend.hasUpdates()) {
-      console.log("RECEIVING UPDATES FROM BACKEND")
-      this.setState({
-        rooms: this.state.backend.getRooms(),
-        events: this.state.backend.getEvents()
-      })
+  componentDidMount: function() {
+    //check if accessToken is stored in localStorage
+    let accessToken = localStorage.getItem('accessToken')
+    if (localStorage.accessToken != undefined) {
+      let userId = localStorage.getItem('userId')
+      let apiUrl = localStorage.getItem('apiUrl')
+      this.loginCallback(userId, accessToken, apiUrl, true)
     }
-    setTimeout(() => {
-      this.checkBackend()
-    }, 100)
   },
 
-  loginCallback: function(userId, accessToken, apiUrl) {
-    userId = '@' + userId.replace('@', '')
-    let backend = new Matrix(userId, accessToken, apiUrl)
+  loginCallback: function(userId, accessToken, apiUrl, restored) {
+    if (restored) {
+      console.log("Restoring from localStorage")
+    } else {
+      userId = '@' + userId.replace('@', '')
+      localStorage.setItem('userId', userId)
+      localStorage.setItem('accessToken', accessToken)
+      localStorage.setItem('apiUrl', apiUrl)
+    }
+    let client = sdk.createClient({
+      baseUrl: apiUrl,
+      accessToken: accessToken,
+      userId: userId
+    });
+
+    console.log("CLIENT", client)
     this.setState({
-      backend: backend
+      client: client
     })
-    this.checkBackend()
+    this.startClient(client)
+  },
+
+  startClient: function(client) {
+    console.log(this.state)
+    client.on("sync", (state, prevState, data) => {
+      console.log(state)
+      if (state == "ERROR") {
+      } else if (state == "SYNCING") {
+        let rooms = {}
+        client.getRooms().forEach((room) => {
+          rooms[room.roomId] = room
+        })
+        this.setState({rooms: rooms})
+      } else if (state == "PREPARED") {
+      }
+    })
+    client.on("event", (event) => {
+    })
+    client.startClient()
   },
 
   render: function() {
-    if (this.state.backend == undefined) {
+    if (this.state.client == undefined) {
       //Login screen
       return <Login callback={this.loginCallback}/>
     }
@@ -60,7 +87,7 @@ let App = create({
         <Sidebar rooms={this.state.rooms} selectRoom={(roomId) => {this.setState({roomId: roomId})}}/>
         <div className="main">
           <Info />
-          <Chat events={this.state.events} backend={this.state.backend} roomId={this.state.roomId}/>
+          <Chat client={this.state.client} roomId={this.state.roomId}/>
           <Input />
         </div>
       </>

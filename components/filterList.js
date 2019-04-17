@@ -16,6 +16,7 @@ let FilterList = create({
   },
 
   select: function(id) {
+    console.log("SELECTED", id)
     this.setState({selection: id})
     this.props.callback(id)
   },
@@ -40,6 +41,7 @@ let FilterList = create({
     let keys = Object.keys(this.props.items)
     let items = keys.map((itemKey, id) => {
       let item = this.props.items[itemKey]
+      console.log(item)
       let props = {
         selected:  this.state.selection == itemKey,
         filter:  this.state.filter,

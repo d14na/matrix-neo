@@ -10,7 +10,7 @@ let Event = create({
   displayName: "m.image",
 
   getInitialState: function() {
-    let hs = this.props.backend.getHS()
+    let hs = this.props.client.baseUrl
     let event = this.props.event;
     let media_mxc = event.content.url.slice(7);
     let thumb_mxc = event.content.info.thumbnail_url.slice(6);

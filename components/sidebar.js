@@ -65,6 +65,7 @@ let Sidebar = create({
   },
 
   render: function() {
+    console.log(this.props.rooms)
     return <div className="sidebar">
       <FilterList items={this.props.rooms} element={RoomListItem} callback={(roomId) => {this.props.selectRoom(roomId)}}/>
     </div>

@@ -57,12 +57,20 @@ let chat = create({
   },
 
   render: function() {
-    if (this.props.roomId == undefined || this.props.events[this.props.roomId] == undefined) {
-      //empty screen
-      return <div className="chat" ref={this.setRef}>
+    let empty = (
+      <div className="chat" ref={this.setRef}>
         <div className="events">
         </div>
       </div>
+    )
+    if (this.props.roomId == undefined) {
+      //empty screen
+      return empty
+    }
+
+    let room = this.props.client.getRoom(this.props.roomId)
+    if (room == null) {
+      return empty
     }
 
     let messageGroups = {
@@ -74,22 +82,27 @@ let chat = create({
     // if the sender is the same, add it to the 'current' messageGroup, if not,
     // push the old one to 'groups' and start with a new array.
 
-    this.props.events[this.props.roomId].forEach((event, id) => {
-      if (event.sender != messageGroups.sender) {
-        messageGroups.sender = event.sender
-        if (messageGroups.current.length != 0) {
-          messageGroups.groups.push(messageGroups.current)
+    console.log("GROUPING EVENTS", room.timeline.length)
+    let events = []
+    if (room.timeline.length > 0) {
+      room.timeline.forEach((timeline) => {
+        console.log("TIMELINE", timeline);
+        let event = timeline.event;
+        if (event.sender != messageGroups.sender) {
+          messageGroups.sender = event.sender
+          if (messageGroups.current.length != 0) {
+            messageGroups.groups.push(messageGroups.current)
+          }
+          messageGroups.current = []
         }
-        messageGroups.current = []
-      }
-      messageGroups.current.push(event)
-    })
-    messageGroups.groups.push(messageGroups.current)
+        messageGroups.current.push(event)
+      })
+      messageGroups.groups.push(messageGroups.current)
 
-    let events = messageGroups.groups.map((events, id) => {
-      return <EventGroup key={id} events={events} backend={this.props.backend}/>
-    })
-
+      events = messageGroups.groups.map((events, id) => {
+        return <EventGroup key={id} events={events} client={this.props.client}/>
+      })
+    }
     //TODO: replace with something that only renders events in view
     return <div className="chat" ref={this.setRef}>
       <div className="events">
@@ -116,7 +129,7 @@ let EventGroup = create({
 
   render: function() {
     let events = this.props.events.map((event, id) => {
-      return getRenderedEvent(event, id, this.props.backend)
+      return getRenderedEvent(event, id, this.props.client)
     })
     return <div className="eventGroup">
       <svg id="avatar" ref={this.avatarRef} ></svg>
@@ -128,10 +141,10 @@ let EventGroup = create({
   }
 })
 
-function getRenderedEvent(event, id, backend) {
+function getRenderedEvent(event, id, client) {
   if (event.type == "m.room.message") {
     let msgtype = event.content.msgtype;
-    return React.createElement(defaultValue(elements[msgtype], elements["m.text"]), {event: event, key: id, backend: backend})
+    return React.createElement(defaultValue(elements[msgtype], elements["m.text"]), {event: event, key: id, client: client})
   }
 }
 
