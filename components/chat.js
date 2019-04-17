@@ -100,7 +100,7 @@ let chat = create({
       messageGroups.groups.push(messageGroups.current)
 
       events = messageGroups.groups.map((events, id) => {
-        return <EventGroup key={id} events={events} client={this.props.client}/>
+        return <EventGroup key={`${this.props.roomId}-${id}`} events={events} client={this.props.client}/>
       })
     }
     //TODO: replace with something that only renders events in view
@@ -116,15 +116,16 @@ let EventGroup = create({
   displayName: "EventGroup",
 
   getInitialState: function() {
+    let user = this.props.client.getUser(this.props.events[0].sender)
     let color = ["red", "green", "yellow", "blue", "purple", "cyan"][Math.floor(Math.random()*6)]
     return {
       color: color,
-      sender: this.props.events[0].sender
+      user: user
     }
   },
 
   avatarRef: function(ref) {
-    jdenticon.update(ref, this.state.sender)
+    jdenticon.update(ref, this.state.user.userId)
   },
 
   render: function() {
@@ -134,7 +135,7 @@ let EventGroup = create({
     return <div className="eventGroup">
       <svg id="avatar" ref={this.avatarRef} ></svg>
       <div className="col">
-        <div id="name" className={`fg-palet-${this.state.color}`}>{this.state.sender}</div>
+        <div id="name" className={`fg-palet-${this.state.color}`}>{this.state.user.displayName}</div>
         {events}
       </div>
     </div>

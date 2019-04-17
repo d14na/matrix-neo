@@ -42,7 +42,7 @@ let RoomListItem = create({
       className += " unread"
     }
     return <div className={className} ref={this.setRef}>
-      <svg id="avatar" data-jdenticon-value={this.props.content.name}></svg>
+      <svg id="avatar" data-jdenticon-value={this.props.content.roomId}></svg>
       <span id="name">{this.props.content.name}</span>
     </div>
   }
