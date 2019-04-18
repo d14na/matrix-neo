@@ -116,10 +116,21 @@ let EventGroup = create({
 
   getInitialState: function() {
     let user = this.props.client.getUser(this.props.events[0].sender)
+    let avatar = <svg id="avatar" ref={this.avatarRef} />
+
+    if (user.avatarUrl != null) {
+      let hs = this.props.client.baseUrl
+      let media_mxc = user.avatarUrl.slice(6)
+      let url = `${hs}/_matrix/media/v1/thumbnail/${media_mxc}?width=128&height=128&method=scale`
+      avatar = <img id="avatar" src={url}/>
+    }
+
+    console.log(user)
     let color = ["red", "green", "yellow", "blue", "purple", "cyan"][Math.floor(Math.random()*6)]
     return {
       color: color,
-      user: user
+      user: user,
+      avatar: avatar
     }
   },
 
@@ -132,7 +143,7 @@ let EventGroup = create({
       return <Event event={event} key={key} client={this.props.client} />
     })
     return <div className="eventGroup">
-      <svg id="avatar" ref={this.avatarRef} />
+      {this.state.avatar}
       <div className="col">
         <div id="name" className={`fg-palet-${this.state.color}`}>{this.state.user.displayName}</div>
         {events}

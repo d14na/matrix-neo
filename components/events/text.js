@@ -10,8 +10,23 @@ let Event = create({
   displayName: "m.text",
 
   render: function() {
-    let event = this.props.event;
-    let eventBody = riot.sanitize(event.content.body)
+    let event = this.props.event
+
+    let eventBody
+
+    if (event.content.format == "org.matrix.custom.html") {
+      let html = riot.sanitize(event.content.formatted_body)
+      eventBody = <div
+        className={this.props.nested ? "nested" : "body"}
+        dangerouslySetInnerHTML={{__html: html}}
+      />
+    } else {
+      eventBody =
+        <div className={this.props.nested ? "nested" : "body"}>
+          {event.content.body}
+        </div>
+    }
+
 
     let eventClass = "event"
     if (event.local) {
@@ -19,10 +34,7 @@ let Event = create({
     }
 
     return <div className={eventClass}>
-      <div
-        className={this.props.nested ? "nested" : "body"}
-        dangerouslySetInnerHTML={{__html: eventBody}}
-      />
+      {eventBody}
     </div>
   }
 })
