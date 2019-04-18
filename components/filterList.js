@@ -41,12 +41,13 @@ let FilterList = create({
     let items = keys.map((itemKey, id) => {
       let item = this.props.items[itemKey]
       let props = {
-        selected:  this.state.selection == itemKey,
-        filter:  this.state.filter,
-        content: item,
-        key:     itemKey,
-        listId:  itemKey,
-        select:  this.select,
+        selected:   this.state.selection == itemKey,
+        filter:     this.state.filter,
+        content:    item,
+        key:        itemKey,
+        listId:     itemKey,
+        select:     this.select,
+        properties: this.props.properties
       }
       return React.createElement(this.props.element, props)
     })

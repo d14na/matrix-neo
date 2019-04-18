@@ -12,13 +12,29 @@ let RoomListItem = create({
   displayName: "RoomListItem",
 
   getInitialState: function() {
+    let room = this.props.content
+    let client = this.props.properties.client
+    let avatar = <svg id="avatar" ref={this.jdenticonRef}/>
+
+    let roomState = room.getLiveTimeline().getState('f')
+    let avatarState = roomState.getStateEvents('m.room.avatar')
+    console.log(avatarState)
+    if (avatarState.length > 0) {
+      let event = avatarState[avatarState.length-1].event
+      let hs = client.baseUrl
+      let media_mxc = event.content.url.slice(6)
+      let url = `${hs}/_matrix/media/v1/thumbnail/${media_mxc}?width=128&height=128&method=scale`
+      avatar = <img id="avatar" src={url}></img>
+    }
+
     return {
-      filterName: this.props.content.name.toUpperCase(),
-      unread: Math.random() > 0.7
+      filterName: room.name.toUpperCase(),
+      unread: Math.random() > 0.7,
+      avatar: avatar
     }
   },
 
-  avatarRef: function(ref) {
+  jdenticonRef: function(ref) {
     jdenticon.update(ref, this.props.content.roomId)
   },
 
@@ -42,7 +58,7 @@ let RoomListItem = create({
       className += " unread"
     }
     return <div className={className} ref={this.setRef}>
-      <svg id="avatar" ref={this.avatarRef}/>
+      {this.state.avatar}
       <span id="name">{this.props.content.name}</span>
     </div>
   }
@@ -61,13 +77,11 @@ let Sidebar = create({
     this.setState({
       filter: filter.toUpperCase()
     })
-    console.log("setting", filter)
   },
 
   render: function() {
-    console.log(this.props.rooms)
     return <div className="sidebar">
-      <FilterList items={this.props.rooms} element={RoomListItem} callback={(roomId) => {this.props.selectRoom(roomId)}}/>
+      <FilterList items={this.props.rooms} properties={{client: this.props.client}} element={RoomListItem} callback={(roomId) => {this.props.selectRoom(roomId)}}/>
     </div>
   }
 })
