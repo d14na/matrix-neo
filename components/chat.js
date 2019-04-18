@@ -7,10 +7,7 @@ const debounce = require('debounce')
 const jdenticon = require('jdenticon')
 const defaultValue = require('default-value')
 
-const elements = {
-  "m.text": require('./events/text.js'),
-  "m.image": require('./events/image.js')
-}
+const Event = require('./events/Event.js') 
 
 jdenticon.config = {
     lightness: {
@@ -131,8 +128,8 @@ let EventGroup = create({
   },
 
   render: function() {
-    let events = this.props.events.map((event, id) => {
-      return getRenderedEvent(event, id, this.props.client)
+    let events = this.props.events.map((event, key) => {
+      return <Event event={event} key={key} client={this.props.client} />
     })
     return <div className="eventGroup">
       <svg id="avatar" ref={this.avatarRef} ></svg>
@@ -143,12 +140,5 @@ let EventGroup = create({
     </div>
   }
 })
-
-function getRenderedEvent(event, id, client) {
-  if (event.type == "m.room.message") {
-    let msgtype = event.content.msgtype;
-    return React.createElement(defaultValue(elements[msgtype], elements["m.text"]), {event: event, key: id, client: client})
-  }
-}
 
 module.exports = chat
