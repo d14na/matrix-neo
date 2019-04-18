@@ -18,7 +18,6 @@ let RoomListItem = create({
 
     let roomState = room.getLiveTimeline().getState('f')
     let avatarState = roomState.getStateEvents('m.room.avatar')
-    console.log(avatarState)
     if (avatarState.length > 0) {
       let event = avatarState[avatarState.length-1].event
       let hs = client.baseUrl
