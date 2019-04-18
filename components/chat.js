@@ -7,7 +7,7 @@ const debounce = require('debounce')
 const jdenticon = require('jdenticon')
 const defaultValue = require('default-value')
 
-const Event = require('./events/Event.js') 
+const Event = require('./events/Event.js')
 
 jdenticon.config = {
     lightness: {
@@ -132,7 +132,7 @@ let EventGroup = create({
       return <Event event={event} key={key} client={this.props.client} />
     })
     return <div className="eventGroup">
-      <svg id="avatar" ref={this.avatarRef} ></svg>
+      <svg id="avatar" ref={this.avatarRef} />
       <div className="col">
         <div id="name" className={`fg-palet-${this.state.color}`}>{this.state.user.displayName}</div>
         {events}

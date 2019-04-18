@@ -18,8 +18,8 @@ let RoomListItem = create({
     }
   },
 
-  componentDidMount() {
-    jdenticon.update("svg")
+  avatarRef: function(ref) {
+    jdenticon.update(ref, this.props.content.roomId)
   },
 
   setRef: function(ref) {
@@ -42,7 +42,7 @@ let RoomListItem = create({
       className += " unread"
     }
     return <div className={className} ref={this.setRef}>
-      <svg id="avatar" data-jdenticon-value={this.props.content.roomId}></svg>
+      <svg id="avatar" ref={this.avatarRef}/>
       <span id="name">{this.props.content.name}</span>
     </div>
   }
