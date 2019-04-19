@@ -114,13 +114,13 @@ function handleCommands(command, parts) {
 
 function rainbowTransform(text) {
   let array = text.split("");
-  let h = 0;
   let delta = 360/text.length;
   if (delta < 10) {
     delta = 10;
   } else if (delta > 20) {
     delta = 20;
   }
+  let h = -1 * delta; // start at beginning
 
   let rainbowArray = array.map((char) => {
     h = h + delta;
