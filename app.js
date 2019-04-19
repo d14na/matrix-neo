@@ -90,7 +90,8 @@ let App = create({
         <div className="main">
           <Info room={this.state.rooms[this.state.roomId]} />
           <Chat client={this.state.client} roomId={this.state.roomId}/>
-          <Input client={this.state.client} roomId={this.state.roomId}/>
+          {this.state.roomId !== undefined
+            && <Input client={this.state.client} roomId={this.state.roomId}/>}
         </div>
       </>
     )
