@@ -34,7 +34,7 @@ let chat = create({
 
   getSnapshotBeforeUpdate: function(oldProps, oldState) {
     let ref = this.state.ref
-    if (ref == null) {return}
+    if (ref == null) {return null}
     if ((ref.scrollHeight - ref.offsetHeight) - ref.scrollTop < 100) { // Less than 100px from bottom
       return true
     }
