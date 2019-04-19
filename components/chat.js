@@ -8,6 +8,8 @@ const jdenticon = require('jdenticon')
 const defaultValue = require('default-value')
 
 const Event = require('./events/Event.js')
+const Info = require('./info.js')
+const Input = require('./input.js')
 
 jdenticon.config = {
     lightness: {
@@ -103,11 +105,17 @@ let chat = create({
       })
     }
     //TODO: replace with something that only renders events in view
-    return <div className="chat" ref={this.setRef}>
-      <div className="events">
-        {events}
-      </div>
-    </div>
+    return (
+      <>
+        <Info room={room} />
+        <div className="chat" ref={this.setRef}>
+          <div className="events">
+            {events}
+          </div>
+        </div>
+        <Input client={this.state.client} roomId={this.state.roomId}/>
+      </>
+    )
   }
 })
 

@@ -18,6 +18,7 @@ $brown: #A3685A;
 $accent: $blue;
 
 $spacing: 0.7rem;
+$borderwidth: 0.2rem;
 
 @font-face {
   font-family: "Open Sans";
@@ -60,7 +61,7 @@ html, body {
   background: $bg1;
 }
 
-.input {
+.input, .info {
   background: $bg2;
 }
 
@@ -182,7 +183,7 @@ body {
   max-width: 15vw;
 
   .filter {
-    margin-bottom: $spacing;
+    border-bottom: $borderwidth solid $bg;
 
     input {
       width: 100%;
@@ -191,6 +192,8 @@ body {
       border: none;
       color: white;
       font-size: 1rem;
+      margin: 0;
+      font-weight: bold;
     }
   }
 }
@@ -251,6 +254,8 @@ body {
   padding: $spacing;
   color: $accent;
   font-weight: bold;
+  border-bottom: $borderwidth solid $bg;
+  box-sizing: border-box;
 }
 
 .chat {
@@ -324,14 +329,21 @@ body {
 
 .input {
   display: flex;
+  border-top: $borderwidth solid $bg;
 
-  input {
+  textarea {
     background: transparent;
     box-sizing: border-box;
     flex: 1 1 auto;
     padding: $spacing;
     font-size: 1.2rem;
     border: none;
+
+    resize: none;
+    overflow: hidden;
+    overflow-y: auto;
+    outline: none;
+    max-height: 150px;
   }
 }
 

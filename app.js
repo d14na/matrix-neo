@@ -8,9 +8,7 @@ const sdk = require('matrix-js-sdk')
 
 const Sidebar = require('./components/sidebar.js')
 const Login = require('./components/Login.js')
-const Info = require('./components/info.js')
 const Chat = require('./components/chat.js')
-const Input = require('./components/input.js')
 
 // Things that will get settings:
 // colorscheme
@@ -88,10 +86,7 @@ let App = create({
       <>
         <Sidebar client={this.state.client} rooms={this.state.rooms} selectRoom={(roomId) => {this.setState({roomId: roomId})}}/>
         <div className="main">
-          <Info room={this.state.rooms[this.state.roomId]} />
           <Chat client={this.state.client} roomId={this.state.roomId}/>
-          {this.state.roomId !== undefined
-            && <Input client={this.state.client} roomId={this.state.roomId}/>}
         </div>
       </>
     )
