@@ -13,12 +13,16 @@ let Event = create({
     let hs = this.props.client.baseUrl
     let event = this.props.event
     let media_mxc = event.content.url.slice(6)
-    let thumb_mxc = event.content.info.thumbnail_url.slice(6)
-    let base = `${hs}/_matrix/media/v1/download`
+    let thumb_mxc = media_mxc
+    if (event.content.info != undefined && event.content.info.thumbnail_info != undefined) {
+      thumb_mxc = event.content.info.thumbnail_url.slice(6)
+    }
+    let download = `${hs}/_matrix/media/v1/download`
+    let thumbnail = `${hs}/_matrix/media/v1/thumbnail/${thumb_mxc}?width=1000&height=1000&method=scale`
     return {
       url: {
-        media: `${base}/${media_mxc}`,
-        thumb: `${base}/${thumb_mxc}`
+        media: `${download}/${media_mxc}`,
+        thumb: thumbnail
       }
     }
   },
