@@ -52,9 +52,7 @@ let FilterList = create({
       return React.createElement(this.props.element, props)
     })
     return <>
-      <div className="filter">
-        <input ref={this.inputRef} placeholder="Search"/>
-      </div>
+      <input className="filter" ref={this.inputRef} placeholder="Search"/>
       <div className="list">
         {items}
       </div>

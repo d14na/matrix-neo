@@ -57,9 +57,7 @@ let chat = create({
 
   render: function() {
     let empty = (
-      <div className="chat" ref={this.setRef}>
-        <div className="events">
-        </div>
+      <div className="main">
       </div>
     )
     if (this.props.roomId == undefined) {
@@ -106,15 +104,15 @@ let chat = create({
     }
     //TODO: replace with something that only renders events in view
     return (
-      <>
+      <div className="main">
         <Info room={room} />
         <div className="chat" ref={this.setRef}>
           <div className="events">
             {events}
           </div>
         </div>
-        <Input client={this.state.client} roomId={this.state.roomId}/>
-      </>
+        <Input client={this.props.client} roomId={this.props.roomId}/>
+      </div>
     )
   }
 })

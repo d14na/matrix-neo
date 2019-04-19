@@ -183,18 +183,15 @@ body {
   max-width: 15vw;
 
   .filter {
+    border: none;
     border-bottom: $borderwidth solid $bg;
-
-    input {
-      width: 100%;
-      box-sizing: border-box;
-      padding: $spacing;
-      border: none;
-      color: white;
-      font-size: 1rem;
-      margin: 0;
-      font-weight: bold;
-    }
+    width: 100%;
+    box-sizing: border-box;
+    padding: $spacing;
+    color: white;
+    font-size: 1rem;
+    margin: 0;
+    font-weight: bold;
   }
 }
 
@@ -253,14 +250,16 @@ body {
 .info {
   padding: $spacing;
   color: $accent;
+  font-size: 1rem;
   font-weight: bold;
   border-bottom: $borderwidth solid $bg;
   box-sizing: border-box;
 }
 
 .chat {
-  padding: $spacing;
+  padding: 0 $spacing;
   position: relative;
+  box-sizing: border-box;
 
   .events {
     display: flex;
@@ -291,9 +290,9 @@ body {
         border: 0.2rem solid lighten($bg0, 10);
 
         position: sticky;
-        top: $spacing/4 - 0.2rem;
+        top: $spacing;
         //align-self: flex-end;
-        //bottom: $spacing/4 - 0.2rem;
+        //bottom: $spacing;
       }
 
       .col {
