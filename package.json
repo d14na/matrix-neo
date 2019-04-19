@@ -17,6 +17,7 @@
     "blueimp-canvas-to-blob": "^3.14.0",
     "browserify": "^16.2.3",
     "budo": "^11.5.0",
+    "color-convert": "^2.0.0",
     "create-react-class": "^15.6.3",
     "debounce": "^1.2.0",
     "default-value": "^1.0.0",
