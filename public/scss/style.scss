@@ -202,9 +202,9 @@ body {
 }
 
 .roomListItem {
-  height: 2rem + 3 * $spacing;
+  height: 2rem + 2.5 * $spacing;
   display: grid;
-  grid-template-columns: 2rem + 2.5*$spacing - 0.2rem auto;
+  grid-template-columns: 2rem + 2*$spacing - 0.2rem auto;
   align-items: center;
   width: 100%;
   box-sizing: border-box;
