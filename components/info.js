@@ -7,7 +7,11 @@ const Promise = require('bluebird')
 let info = create({
   displayName: "Info",
   render: function() {
-    return <div className="info">Room Title</div> 
+    let title = ""
+    if (this.props.room != undefined) {
+      title = this.props.room.name
+    }
+    return <div className="info">{title}</div>
   }
 })
 

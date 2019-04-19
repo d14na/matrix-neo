@@ -88,7 +88,7 @@ let App = create({
       <>
         <Sidebar client={this.state.client} rooms={this.state.rooms} selectRoom={(roomId) => {this.setState({roomId: roomId})}}/>
         <div className="main">
-          <Info />
+          <Info room={this.state.rooms[this.state.roomId]} />
           <Chat client={this.state.client} roomId={this.state.roomId}/>
           <Input client={this.state.client} roomId={this.state.roomId}/>
         </div>
