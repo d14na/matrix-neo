@@ -306,6 +306,7 @@ body {
         .body {
           padding: $spacing/4;
           padding-left: $spacing/2;
+          white-space: pre-wrap;
 
           img {
             max-height: 40vh;
