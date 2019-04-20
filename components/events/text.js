@@ -15,20 +15,20 @@ let Event = create({
     let eventBody
 
     if (event.content.format == "org.matrix.custom.html") {
-      let html = riot.sanitize(event.content.formatted_body)
+      //let html = riot.sanitize(event.content.formatted_body)
       eventBody = <div
         className={this.props.nested ? "nested" : "body"}
-        dangerouslySetInnerHTML={{__html: html}}
+        dangerouslySetInnerHTML={{__html: this.props.body}}
       />
     } else {
       eventBody =
         <div className={this.props.nested ? "nested" : "body"}>
-          {event.content.body}
+          {this.props.body}
         </div>
     }
 
 
-    let eventClass = "event"
+    let eventClass = ""
     if (event.local) {
       eventClass += " local"
     }

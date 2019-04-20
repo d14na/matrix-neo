@@ -4,6 +4,7 @@ const ReactDOM = require('react-dom')
 const create = require('create-react-class')
 const Promise = require('bluebird')
 const colorConvert = require('color-convert')
+const sanitize = require('sanitize-html')
 
 let input = create({
   displayName: "Input",
@@ -77,7 +78,7 @@ let input = create({
 
   sendHTML: function(html) {
     let content = {
-      body: html, // this should probably be stripped to plaintext
+      body: sanitize(html, {allowedTags: []}),
       formatted_body: html,
       format: "org.matrix.custom.html",
       msgtype: "m.text"
@@ -99,8 +100,8 @@ function handleCommands(command, parts) {
     if (parts.length < 2) {
       return
     }
-    let string = ""
-    for(let i=1; i < parts.length; i++) {
+    let string = parts[1]
+    for(let i=2; i < parts.length; i++) {
       string += " " + parts[i]
     }
     let html = rainbowTransform(string)

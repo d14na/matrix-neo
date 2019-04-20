@@ -276,7 +276,6 @@ body {
 
       #name {
         font-weight: bold;
-        padding-left: $spacing/2;
       }
 
       #avatar {
@@ -298,26 +297,41 @@ body {
         grid-area: content;
         padding-left: $spacing * 1.2;
 
-        .local {
-          color: $bg4;
+        .reply + .event {
+          margin-bottom: $spacing;
         }
 
-        .body {
-          padding: $spacing/4;
-          padding-left: $spacing/2;
-          white-space: pre-wrap;
-
-          img {
-            max-height: 40vh;
-            max-width: 90%;
-            object-fit: contain;
+        .event {
+          .reply {
+            border-left: $borderwidth solid $blue;
+            padding-left: 1/2 * $spacing;
+            margin-top: $spacing;
           }
-        }
 
-        .body:hover {
-          border-radius: 0.1rem;
-          background-color: hsla(0, 100%, 100%, 0.05);
-          transition: 0.1s;
+          &:nth-child(2) .reply {
+            margin-top: 0;
+          }
+
+          .body {
+            padding: $spacing/4 0;
+            white-space: pre-wrap;
+
+            img {
+              max-height: 40vh;
+              max-width: 90%;
+              object-fit: contain;
+            }
+          }
+
+          &:hover {
+            border-radius: 0.1rem;
+            background-color: hsla(0, 100%, 100%, 0.05);
+            transition: 0.1s;
+          }
+
+          & .local {
+            color: $bg4;
+          }
         }
       }
     }

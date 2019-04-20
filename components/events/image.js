@@ -28,14 +28,14 @@ let Event = create({
   },
 
   render: function() {
-    return <div className="event">
+    return (
       <div className="body">
         <a href={this.state.url.media} target="_blank">
           <img src={this.state.url.thumb}/>
         </a>
         <Text event={this.props.event} nested={true}/>
       </div>
-    </div>
+    )
   }
 })
 

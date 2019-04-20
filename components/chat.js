@@ -99,7 +99,7 @@ let chat = create({
       messageGroups.groups.push(messageGroups.current)
 
       events = messageGroups.groups.map((events, id) => {
-        return <EventGroup key={`${this.props.roomId}-${id}`} events={events} client={this.props.client}/>
+        return <EventGroup key={`${this.props.roomId}-${id}`} events={events} client={this.props.client} room={room}/>
       })
     }
     //TODO: replace with something that only renders events in view
@@ -145,7 +145,7 @@ let EventGroup = create({
 
   render: function() {
     let events = this.props.events.map((event, key) => {
-      return <Event event={event} key={key} client={this.props.client} />
+      return <Event event={event} key={key} client={this.props.client} room={this.props.room} />
     })
     return <div className="eventGroup">
       {this.state.avatar}
