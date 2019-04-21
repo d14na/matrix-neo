@@ -11,7 +11,7 @@ const elements = {
   "m.image": require('./image.js')
 }
 
-const mxReplyRegex = /<mx-reply>(.+)<\/mx-reply>/
+const mxReplyRegex = /^<mx-reply>[\s\S]+<\/mx-reply>/
 
 let Event = create({
   displayName: "Event",
@@ -21,6 +21,7 @@ let Event = create({
     let state = ""
     let reply = ""
     let element = "unsupported event"
+    let parsedBody
 
     if (event.local) {
       state = " local"
@@ -28,15 +29,23 @@ let Event = create({
 
     if (event.type == "m.room.message") {
       let msgtype = event.content.msgtype;
-      let formattedEvent = getEvent(event)
-      let parsedBody = formattedEvent.body
+
+      let formattedEvent = parseEvent(event)
+      parsedBody = formattedEvent.body
 
       let parsedReply = formattedEvent.parsedReply
       if (parsedReply.isReply) {
         let repliedEvent = this.props.room.findEventById(parsedReply.to)
-        let shortText = getEvent(repliedEvent.event).body
-        if (shortText.length > 50) {
-          shortText = shortText.substr(0, 50) + "..."
+        let shortText
+        if (repliedEvent == undefined) {
+          shortText = "Can't load this event"
+        } else {
+          shortText = parseEvent(repliedEvent.event)
+          if (shortText.html) {
+            shortText = <span dangerouslySetInnerHTML={{__html: shortText.body}}/>
+          } else {
+            shortText = shortText.body
+          }
         }
         reply = (
           <div className="reply">
@@ -48,7 +57,8 @@ let Event = create({
     }
 
     return (
-      <div className={"event" + state}>
+      <div className={"event" + state} onClick={() => {console.log(parsedBody, event)
+        }}>
         {reply}
         {element}
       </div>
@@ -56,16 +66,22 @@ let Event = create({
   }
 })
 
-function getEvent(event) {
+function parseEvent(event, context) {
+  // context can be either 'main' or 'reply'
   let body = event.content.body
+  let html = false
+
   if (event.content.format == "org.matrix.custom.html") {
     body = riot.sanitize(event.content.formatted_body)
+    html = true
   }
+
   let parsedReply = parseReply(event, body)
   if (parsedReply.isReply) {
+    // body with fallback stripped
     body = parsedReply.body
   }
-  return {body: body, parsedReply: parsedReply}
+  return {body: body, parsedReply: parsedReply, html: html}
 }
 
 function parseReply(event, body) {
@@ -74,7 +90,9 @@ function parseReply(event, body) {
     replyTo = event.content['m.relates_to']['m.in_reply_to'].event_id
     if (replyTo) {
       // strip <mx-reply> from message if it exists
+      console.log("STRIPPING FROM", body)
       body = body.replace(mxReplyRegex, "")
+      console.log("TO            ", body)
     }
   } catch(err) {
     // no reply
