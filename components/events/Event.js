@@ -6,6 +6,8 @@ const defaultValue = require('default-value')
 
 const riot = require('../../lib/riot-utils.js')
 
+const User = require('./user.js')
+
 const elements = {
   "m.text": require('./text.js'),
   "m.image": require('./image.js')
@@ -36,10 +38,13 @@ let Event = create({
       let parsedReply = formattedEvent.parsedReply
       if (parsedReply.isReply) {
         let repliedEvent = this.props.room.findEventById(parsedReply.to)
-        let shortText
+        let shortText, repliedUser
         if (repliedEvent == undefined) {
           shortText = "Can't load this event"
+          repliedUser = {userId: "NEO_UNKNOWN", displayName: "Unknown User"}
+          // fall back on <mx-reply> content?
         } else {
+          repliedUser = this.props.client.getUser(repliedEvent.event.sender)
           shortText = parseEvent(repliedEvent.event)
           if (shortText.html) {
             shortText = <span dangerouslySetInnerHTML={{__html: shortText.body}}/>
@@ -49,6 +54,7 @@ let Event = create({
         }
         reply = (
           <div className="reply">
+            <User user={repliedUser}/>
             {shortText}
           </div>
         )
@@ -90,9 +96,7 @@ function parseReply(event, body) {
     replyTo = event.content['m.relates_to']['m.in_reply_to'].event_id
     if (replyTo) {
       // strip <mx-reply> from message if it exists
-      console.log("STRIPPING FROM", body)
       body = body.replace(mxReplyRegex, "")
-      console.log("TO            ", body)
     }
   } catch(err) {
     // no reply

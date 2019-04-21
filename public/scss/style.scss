@@ -274,7 +274,7 @@ body {
       grid-template-areas: "avatar content";
       margin-bottom: $spacing/2;
 
-      #name {
+      .name {
         font-weight: bold;
       }
 
@@ -296,6 +296,10 @@ body {
       .col {
         grid-area: content;
         padding-left: $spacing * 1.2;
+
+        h1, h2, h3, h4, h5, h6 {
+          margin: 0;
+        }
 
         .reply + .event {
           margin-bottom: $spacing;

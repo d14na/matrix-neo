@@ -10,6 +10,7 @@ const defaultValue = require('default-value')
 const Event = require('./events/Event.js')
 const Info = require('./info.js')
 const Input = require('./input.js')
+const User = require('./events/user.js')
 
 jdenticon.config = {
     lightness: {
@@ -150,7 +151,7 @@ let EventGroup = create({
     return <div className="eventGroup">
       {this.state.avatar}
       <div className="col">
-        <div id="name" className={`fg-palet-${this.state.color}`}>{this.state.user.displayName}</div>
+        <User user={this.state.user}/>
         {events}
       </div>
     </div>
