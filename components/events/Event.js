@@ -82,6 +82,8 @@ function parseEvent(event, context) {
     html = true
   }
 
+  body = body.trim()
+
   let parsedReply = parseReply(event, body)
   if (parsedReply.isReply) {
     // body with fallback stripped

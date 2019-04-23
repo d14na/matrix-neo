@@ -22,15 +22,13 @@ let User = create({
   getInitialState: function() {
     let icon = jdenticon.toSvg(this.props.user.userId, 200)
     let match = icon.match(/#([a-f0-9]{6})/g)
-    console.log(match, icon)
     let color = '#ff0000'
     for(let i=match.length-1; i>= 0; i--) {
       color = match[i]
       let r = color.substr(1, 2)
       let g = color.substr(3, 2)
       let b = color.substr(5, 2)
-      console.log(r, g, b)
-      if (r != g && g != b) { //greyscale
+      if (r != g && g != b) { // not greyscale
         break
       }
     }
