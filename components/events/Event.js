@@ -22,7 +22,7 @@ let Event = create({
     let event = this.props.event
     let state = ""
     let reply = ""
-    let element = "unsupported event"
+    let element = "unsupported event: " + event.type
     let parsedBody
 
     if (event.local) {
