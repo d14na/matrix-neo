@@ -216,12 +216,10 @@ body {
 .roomListItem {
   height: 2rem + 2.5 * $spacing;
   display: grid;
-  grid-template-columns: 2rem + 2*$spacing - 0.2rem auto;
+  grid-template-columns: 4.2rem auto;
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  //border-bottom: 1px solid lighten($bg1, 3);
-  padding: 1/4 * $spacing;
   transition: 0.2s;
 
   &.active {
@@ -242,11 +240,11 @@ body {
 
   #avatar {
     box-sizing: border-box;
-    height: calc(100% - 6px);
+    justify-self: center;
+    height: calc(100% - 0.5rem);
     object-fit: cover;
     border: 3px solid lighten($bg0, 10);
     border-radius: 0.4rem;
-    margin: 3px;
   }
 
   #name {
@@ -255,7 +253,7 @@ body {
     text-overflow: ellipsis;
     overflow: hidden;
     padding: $spacing;
-    padding-right: $spacing/4;
+    padding-left: 0;
   }
 }
 
@@ -308,7 +306,7 @@ body {
 
       .col {
         grid-area: content;
-        padding-left: $spacing/2;
+        padding: 0 $spacing/2;
 
         h1, h2, h3, h4, h5, h6 {
           margin: 0;
