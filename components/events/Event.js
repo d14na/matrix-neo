@@ -63,8 +63,7 @@ let Event = create({
     }
 
     return (
-      <div className={"event" + state} onClick={() => {console.log(parsedBody, event)
-        }}>
+      <div className={"event" + state} onClick={() => {this.props.onReplyClick(event)}}>
         {reply}
         {element}
       </div>

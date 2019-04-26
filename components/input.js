@@ -71,6 +71,7 @@ let input = create({
       body: string,
       msgtype: "m.text"
     }
+    content = this.sendReply(content)
     this.props.client.sendEvent(this.props.roomId, "m.room.message", content, (err, res) => {
       console.log(err)
     })
@@ -83,13 +84,33 @@ let input = create({
       format: "org.matrix.custom.html",
       msgtype: "m.text"
     }
+
+    content = this.sendReply(content)
+
     this.props.client.sendEvent(this.props.roomId, "m.room.message", content, (err, res) => {
       console.log(err)
     })
   },
 
+  sendReply: function(content) {
+    if (this.props.replyEvent != undefined) {
+      content['m.relates_to'] = {
+        'm.in_reply_to': {
+          event_id: this.props.replyEvent.event_id
+        }
+      }
+      this.props.onReplyClick()
+    }
+    return content
+  },
+
   render: function() {
     return <div className="input">
+      {this.props.replyEvent &&
+        <div className="replyEvent">
+          {this.props.replyEvent.content.body}
+        </div>
+      }
       <textarea ref={this.setRef} rows="1" spellCheck="false" placeholder="unencrypted message"></textarea>
     </div>
   }

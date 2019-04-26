@@ -56,6 +56,10 @@ let chat = create({
     }
   },
 
+  onReplyClick: function(e) {
+    this.setState({replyEvent: e})
+  },
+
   render: function() {
     let empty = (
       <div className="main">
@@ -100,7 +104,7 @@ let chat = create({
       messageGroups.groups.push(messageGroups.current)
 
       events = messageGroups.groups.map((events, id) => {
-        return <EventGroup key={`${this.props.roomId}-${id}`} events={events} client={this.props.client} room={room}/>
+        return <EventGroup key={`${this.props.roomId}-${id}`} events={events} client={this.props.client} room={room} onReplyClick={this.onReplyClick}/>
       })
     }
     //TODO: replace with something that only renders events in view
@@ -112,7 +116,7 @@ let chat = create({
             {events}
           </div>
         </div>
-        <Input client={this.props.client} roomId={this.props.roomId}/>
+        <Input client={this.props.client} roomId={this.props.roomId} replyEvent={this.state.replyEvent} onReplyClick={this.onReplyClick}/>
       </div>
     )
   }
@@ -146,7 +150,7 @@ let EventGroup = create({
 
   render: function() {
     let events = this.props.events.map((event, key) => {
-      return <Event event={event} key={key} client={this.props.client} room={this.props.room} />
+      return <Event event={event} key={key} client={this.props.client} room={this.props.room} onReplyClick={this.props.onReplyClick}/>
     })
     return <div className="eventGroup">
       {this.state.avatar}
