@@ -316,6 +316,7 @@ body {
           margin-bottom: $spacing;
         }
 
+
         .event {
           padding-left: $spacing;
 
@@ -323,6 +324,10 @@ body {
             border-left: $borderwidth solid $blue;
             padding-left: 1/2 * $spacing;
             margin-top: $spacing;
+
+            .user {
+              padding: 0;
+            }
           }
 
           &:nth-child(2) .reply {

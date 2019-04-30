@@ -136,9 +136,7 @@ let EventGroup = create({
       avatar = <img id="avatar" src={url}/>
     }
 
-    let color = ["red", "green", "yellow", "blue", "purple", "cyan"][Math.floor(Math.random()*6)]
     return {
-      color: color,
       user: user,
       avatar: avatar
     }
