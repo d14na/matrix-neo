@@ -109,7 +109,7 @@ let input = create({
   render: function() {
     return <div className="input">
       {this.props.replyEvent &&
-        <div className="replyEvent">
+        <div className="replyEvent" onClick={() => this.props.onReplyClick()}>
           {this.props.replyEvent.plaintext()}
         </div>
       }

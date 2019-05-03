@@ -26,19 +26,20 @@ jdenticon.config = {
     backColor: "#00000000"
 };
 
-sdk.MatrixEvent.prototype.plaintext = function() {
-  let event = this.event
-  let plain = "unknown event"
+let eventFunctions = {
+  plaintext: function() {
+    let plain = "unknown event"
 
-  if (event.type == "m.room.message") {
-    plain = event.content.body
+    if (this.type == "m.room.message") {
+      plain = this.content.body
 
-    if (event.content.format == "org.matrix.custom.html") {
-      plain = sanitize(event.content.formatted_body, {allowedTags: []})
+      if (this.content.format == "org.matrix.custom.html") {
+        plain = sanitize(this.content.formatted_body, {allowedTags: []})
+      }
     }
-  }
 
-  return plain
+    return plain
+  }
 }
 
 let chat = create({
@@ -106,6 +107,7 @@ let chat = create({
     if (room.timeline.length > 0) {
       room.timeline.forEach((MatrixEvent) => {
         let event = MatrixEvent.event;
+        event = Object.assign(event, eventFunctions)
         if (event.user_id != null) { // localecho messages
           event.sender = event.user_id
           event.local = true
