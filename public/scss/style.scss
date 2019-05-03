@@ -302,7 +302,7 @@ body {
 
       .col {
         grid-area: content;
-        padding: 0 $spacing;
+        padding: 0 $spacing/2;
 
         .user {
           font-weight: bold;
