@@ -39,6 +39,7 @@ html, body {
   color: white;
   font-family: "Open Sans";
   font-size: 110%;
+  line-height: 1em;
   height: 100vh;
   width: 100vw;
   position: absolute;
@@ -284,11 +285,6 @@ body {
       grid-template-areas: "avatar content";
       margin-bottom: $spacing/2;
 
-      .user {
-        font-weight: bold;
-        padding-left: $spacing;
-      }
-
       #avatar {
         height: 3rem;
         width: 3rem;
@@ -306,7 +302,11 @@ body {
 
       .col {
         grid-area: content;
-        padding: 0 $spacing/2;
+        padding: 0 $spacing;
+
+        .user {
+          font-weight: bold;
+        }
 
         h1, h2, h3, h4, h5, h6 {
           margin: 0;
@@ -318,12 +318,10 @@ body {
 
 
         .event {
-          padding-left: $spacing;
-
           .reply {
             border-left: $borderwidth solid $blue;
             padding-left: 1/2 * $spacing;
-            margin-top: $spacing;
+            margin-top: $spacing/2;
 
             .user {
               padding: 0;
@@ -348,6 +346,8 @@ body {
           code {
             font-size: 1rem
           }
+
+          //border: 1px solid red;
 
           &:hover {
             border-radius: 0.1rem;
