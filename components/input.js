@@ -73,7 +73,9 @@ let input = create({
     }
     content = this.sendReply(content)
     this.props.client.sendEvent(this.props.roomId, "m.room.message", content, (err, res) => {
-      console.log(err)
+      if (err != null) {
+        console.log(err)
+      }
     })
   },
 
@@ -108,7 +110,7 @@ let input = create({
     return <div className="input">
       {this.props.replyEvent &&
         <div className="replyEvent">
-          {this.props.replyEvent.content.body}
+          {this.props.replyEvent.plaintext()}
         </div>
       }
       <textarea ref={this.setRef} rows="1" spellCheck="false" placeholder="unencrypted message"></textarea>

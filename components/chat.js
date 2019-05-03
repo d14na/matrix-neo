@@ -6,6 +6,8 @@ const Promise = require('bluebird')
 const debounce = require('debounce')
 const jdenticon = require('jdenticon')
 const defaultValue = require('default-value')
+const sdk = require('matrix-js-sdk')
+const sanitize = require('sanitize-html')
 
 const Event = require('./events/Event.js')
 const Info = require('./info.js')
@@ -23,6 +25,21 @@ jdenticon.config = {
     },
     backColor: "#00000000"
 };
+
+sdk.MatrixEvent.prototype.plaintext = function() {
+  let event = this.event
+  let plain = "unknown event"
+
+  if (event.type == "m.room.message") {
+    plain = event.content.body
+
+    if (event.content.format == "org.matrix.custom.html") {
+      plain = sanitize(event.content.formatted_body, {allowedTags: []})
+    }
+  }
+
+  return plain
+}
 
 let chat = create({
   displayName: "Chat",
@@ -78,7 +95,8 @@ let chat = create({
     let messageGroups = {
       current: [],
       groups: [],
-      sender: ""
+      sender: "",
+      type: ""
     }
 
     // if the sender is the same, add it to the 'current' messageGroup, if not,
@@ -86,14 +104,15 @@ let chat = create({
 
     let events = []
     if (room.timeline.length > 0) {
-      room.timeline.forEach((timeline) => {
-        let event = timeline.event;
+      room.timeline.forEach((MatrixEvent) => {
+        let event = MatrixEvent.event;
         if (event.user_id != null) { // localecho messages
           event.sender = event.user_id
           event.local = true
         }
-        if (event.sender != messageGroups.sender) {
+        if (event.sender != messageGroups.sender || event.type != messageGroups.type) {
           messageGroups.sender = event.sender
+          messageGroups.type = event.type
           if (messageGroups.current.length != 0) {
             messageGroups.groups.push(messageGroups.current)
           }
