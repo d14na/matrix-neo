@@ -6,8 +6,16 @@ const Promise = require('bluebird')
 const colorConvert = require('color-convert')
 const sanitize = require('sanitize-html')
 
+const FileUpload = require('./fileUpload.js')
+
 let input = create({
   displayName: "Input",
+
+  getInitialState: function() {
+    return {
+      uploads: []
+    }
+  },
 
   setRef: function(ref) {
     if (ref !=null) {
@@ -27,6 +35,19 @@ let input = create({
       ref.addEventListener('keydown', this.resize_textarea_delayed)
       this.setState({ref: ref})
     }
+  },
+
+  addUpload: function(upload) {
+    let uploads = this.state.uploads
+    uploads.push(upload)
+    console.log(uploads)
+    this.setState({uploads: uploads})
+  },
+
+  removeUpload: function(index) {
+    let uploads = this.state.uploads
+    uploads.splice(index, 1)
+    this.setState({uploads: uploads})
   },
 
   resize_textarea: function(element) {
@@ -113,7 +134,22 @@ let input = create({
           {this.props.replyEvent.plaintext()}
         </div>
       }
-      <textarea ref={this.setRef} rows="1" spellCheck="false" placeholder="unencrypted message"></textarea>
+      {this.state.uploads.length > 0 &&
+        <div className="imgPreview">
+          {this.state.uploads.map((upload, key) => {
+            return (
+              <div key={key}>
+                <img src={upload.preview}/>
+                <span onClick={() => this.removeUpload(key)}>X</span>
+              </div>
+            )
+          })}
+        </div>
+      }
+      <div className="content">
+        <textarea ref={this.setRef} rows="1" spellCheck="false" placeholder="unencrypted message"></textarea>
+        <FileUpload addUpload={this.addUpload}/>
+      </div>
     </div>
   }
 })
