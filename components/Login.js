@@ -49,7 +49,7 @@ let login = create({
       this.doLogin()
     }).catch((error) => {
       console.log("ERROR fetching homeserver url", error)
-      let hsState = Object.assign(this.state.hs, {error: error, valid: false})
+      let hsState = Object.assign(this.state.hs, {error: error, valid: false, prompt: true})
       this.setState({hs: hsState})
     })
   },
@@ -113,6 +113,7 @@ let login = create({
     let formState = this.state.formState
     formState.hs = e.target.value
     this.setState({formState: formState})
+    this.setState({hs: {error: null, valid: false, prompt: true, changed: true}})
   },
 
   render: function() {
@@ -141,7 +142,7 @@ let login = create({
           <label htmlFor="hs" className={hsState}>Homeserver: </label>
           {this.state.hs.prompt ? (
             <>
-              <input type="text" id="hs" placeholder="https://lain.haus" value={this.state.formState["hs"]} onChange={this.handleHsChange}/>
+              <input type="text" id="hs" value={this.state.formState["hs"]} onChange={this.handleHsChange}/>
             </>
           ) : (
             <span id="hs">{this.state.formState["hs"]}</span>
