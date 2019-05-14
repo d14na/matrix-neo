@@ -16,6 +16,7 @@ $purple: #B294BB;
 $brown: #A3685A;
 
 $accent: $blue;
+$hover: hsla(0, 100%, 100%, 0.05);
 
 $spacing: 0.7rem;
 $borderwidth: 0.2rem;
@@ -113,6 +114,7 @@ body {
   label, input, button, span {
     margin: 0.3em;
     padding: 0.3em;
+    line-height: 140%;
   }
 
   label {
@@ -166,7 +168,7 @@ body {
   position: relative;
   display: grid;
   box-sizing: border-box;
-  grid-template-columns: 15% 85%;
+  //grid-template-columns: 15% 85%;
   justify-content: center;
 }
 
@@ -354,7 +356,7 @@ body {
 
           &:hover {
             border-radius: 0.1rem;
-            background-color: hsla(0, 100%, 100%, 0.05);
+            background: $hover;
             transition: 0.1s;
           }
 
@@ -372,7 +374,7 @@ body {
   flex-direction: column;
   border-top: $borderwidth solid transparent;
 
-  .replyEvent {
+  .replyEvent, .imgPreview {
     border-bottom: $borderwidth/2 solid $bg3;
     padding: $spacing/2 $spacing;
     max-width: 100%;
@@ -381,19 +383,63 @@ body {
     overflow: hidden;
   }
 
-  textarea {
-    background: transparent;
-    box-sizing: border-box;
-    flex: 1 1 auto;
-    padding: $spacing;
-    font-size: 1.2rem;
-    border: none;
+  .imgPreview {
+    object-fit: cover;
+    display: flex;
+  }
 
-    resize: none;
-    overflow: hidden;
-    overflow-y: auto;
-    outline: none;
-    max-height: 150px;
+  .imgPreview div {
+    height: 5rem;
+    width: 5rem;
+    object-fit: cover;
+    margin: 2px;
+    margin-right: $spacing;
+    position: relative;
+
+    img {
+      height: 5rem;
+      width: 5rem;
+      object-fit: cover;
+    }
+
+    span {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+    }
+  }
+
+  .fileUpload {
+    input {
+      display: none;
+    }
+  }
+
+  .content {
+    display: flex;
+
+    textarea {
+      background: transparent;
+      box-sizing: border-box;
+      flex: 1 1 auto;
+      padding: $spacing;
+      font-size: 1.2rem;
+      border: none;
+
+      resize: none;
+      overflow: hidden;
+      overflow-y: auto;
+      outline: none;
+      max-height: 150px;
+    }
+
+    .fileUpload {
+      flex: 0 0 auto;
+      display: inline-block;
+      margin: $spacing;
+      align-self: center;
+      cursor: pointer;
+    }
   }
 }
 
