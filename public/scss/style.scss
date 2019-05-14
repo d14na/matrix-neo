@@ -246,6 +246,7 @@ body {
     box-sizing: border-box;
     justify-self: center;
     height: calc(100% - 0.5rem);
+    width: 80%;
     object-fit: cover;
     border: 3px solid lighten($bg0, 10);
     border-radius: 0.4rem;
