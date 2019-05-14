@@ -86,6 +86,7 @@ body {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  grid-column-start: span 2;
 
   input, label, button, span {
     font-size: 140%;
@@ -168,8 +169,8 @@ body {
   position: relative;
   display: grid;
   box-sizing: border-box;
-  //grid-template-columns: 15% 85%;
   justify-content: center;
+  grid-template-columns: 15% 85%;
 }
 
 .sidebar, .main {
