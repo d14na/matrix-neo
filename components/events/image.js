@@ -12,6 +12,9 @@ let Event = create({
   getInitialState: function() {
     let hs = this.props.client.baseUrl
     let event = this.props.event
+    if (event.content.url == undefined) {
+      return {url: {media: null, thumb: null}}
+    }
     let media_mxc = event.content.url.slice(6)
     let thumb_mxc = media_mxc
     if (event.content.info != undefined && event.content.info.thumbnail_info != undefined) {

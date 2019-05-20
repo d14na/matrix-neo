@@ -6,6 +6,7 @@ const Promise = require('bluebird')
 const colorConvert = require('color-convert')
 const sanitize = require('sanitize-html')
 
+const riot = require('../lib/riot-utils.js')
 const FileUpload = require('./fileUpload.js')
 
 let input = create({
@@ -40,7 +41,6 @@ let input = create({
   addUpload: function(upload) {
     let uploads = this.state.uploads
     uploads.push(upload)
-    console.log(uploads)
     this.setState({uploads: uploads})
   },
 
@@ -67,24 +67,95 @@ let input = create({
 
   send: function(e) {
     let msg = e.target.value
-    if (msg.startsWith('/')) {
-      // Handle other commands
-      let parts = msg.split(' ')
-      let command = parts[0]
-      let result = handleCommands(command, parts)
-      if (result != null) {
-        if (result.type == "html") {
-          this.sendHTML(result.content)
-        } else {
-          this.sendPlain(result.content)
+    if (msg.trim().length != 0) {
+      //TODO: parse markdown (commonmark?)
+      if (msg.startsWith('/')) {
+        // Handle other commands
+        let parts = msg.split(' ')
+        let command = parts[0]
+        let result = handleCommands(command, parts)
+        if (result != null) {
+          if (result.type == "html") {
+            this.sendHTML(result.content)
+          } else {
+            this.sendPlain(result.content)
+          }
         }
+      } else {
+        this.sendPlain(msg)
       }
-    } else {
-      this.sendPlain(msg)
+    }
+
+    if (this.state.uploads.length > 0) {
+      this.uploadFiles(this.state.uploads)
+      this.setState({uploads: []})
     }
     e.target.value = ""
     e.preventDefault()
     this.resize_textarea_delayed(e)
+  },
+
+  uploadFiles: function(uploads) {
+    let client = this.props.client
+    Promise.map(uploads, (upload) => {
+      let fileUploadPromise = client.uploadContent(upload.file,
+        {onlyContentUri: false}).then((response) => {
+        return response.content_uri
+      })
+
+      let mimeType = upload.file.type
+      let eventType = "m.file"
+      let additionalPromise
+      if (mimeType.startsWith("image/")) {
+        eventType = "m.image"
+        // create and upload thumbnail
+        let thumbnailType = "image/png"
+        if (mimeType == "image/jpeg") {
+          thumbnailType = mimeType
+        }
+        additionalPromise = riot.loadImageElement(upload.file)
+          .then((img) => {
+            return riot.createThumbnail(img,
+              img.width,
+              img.height,
+              thumbnailType)
+            })
+            .catch((error) => {
+              console.error("neo: error getting thumbnail", error)
+            })
+            .then((thumbResult) => {
+              return client.uploadContent(thumbResult.thumbnail, {onlyContentUri: false})
+            }).then((response) => {
+              return {
+                thumbnail_url: response.content_uri,
+                thumbnail_info: {
+                  mimetype: thumbnailType
+                }
+              }
+            })
+      } else if (mimeType.startsWith("video/")) {
+        eventType = "m.video"
+      } else if (mimeType.startsWith("audio/")) {
+        eventType = "m.audio"
+      } else {
+        // m.file
+      }
+      Promise.all([fileUploadPromise, additionalPromise]).then((result) => {
+        console.log(result)
+        let info = {
+          mimetype: mimeType
+        }
+        if (result[1] != undefined) {
+          info = Object.assign(info, result[1])
+        }
+        client.sendEvent(this.props.roomId, "m.room.message", {
+          body: upload.file.name,
+          msgtype: eventType,
+          info: info,
+          url: result[0]
+        })
+      })
+    })
   },
 
   sendPlain: function(string) {

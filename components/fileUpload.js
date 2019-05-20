@@ -20,11 +20,11 @@ let fileUpload = create({
       if (file.type.startsWith("image/")) {
         let reader = new FileReader()
         reader.onloadend = () => {
-          let file = {
+          let fileObject = {
             file: file,
             preview: reader.result
           }
-          this.props.addUpload(file)
+          this.props.addUpload(fileObject)
         }
         reader.readAsDataURL(file)
       }
