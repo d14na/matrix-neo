@@ -27,6 +27,8 @@ let fileUpload = create({
           this.props.addUpload(fileObject)
         }
         reader.readAsDataURL(file)
+      } else {
+        this.props.addUpload({file: file, preview: "/icons/file.svg"})
       }
     })
   },

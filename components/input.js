@@ -106,35 +106,45 @@ let input = create({
       let mimeType = upload.file.type
       let eventType = "m.file"
       let additionalPromise
-      if (mimeType.startsWith("image/")) {
-        eventType = "m.image"
+      if (mimeType.startsWith("image/") || mimeType.startsWith("video/")) {
+        function elementToThumbnail(element) {
+          return new Promise((resolve, reject) => {
+            riot.createThumbnail(element,
+              element.width,
+              element.height,
+              thumbnailType
+            )
+            .catch((error) => {
+              console.error("neo: error getting thumbnail", error)
+              reject()
+            })
+            .then((thumbResult) => {
+              return client.uploadContent(thumbResult.thumbnail, {onlyContentUri: false})
+            }).then((response) => {
+              return resolve({
+                thumbnail_url: response.content_uri,
+                thumbnail_info: {
+                  mimetype: thumbnailType
+                }
+              })
+            })
+
+          })
+        }
+        if (mimeType.startsWith("image/")) {
+          eventType = "m.image"
+          additionalPromise = riot.loadImageElement(upload.file)
+            .then((element) => {return elementToThumbnail(element)})
+        } else if (mimeType.startsWith("video/")) {
+          eventType = "m.video"
+          additionalPromise = riot.loadVideoElement(upload.file)
+            .then((element) => {return elementToThumbnail(element)})
+        }
         // create and upload thumbnail
         let thumbnailType = "image/png"
         if (mimeType == "image/jpeg") {
           thumbnailType = mimeType
         }
-        additionalPromise = riot.loadImageElement(upload.file)
-          .then((img) => {
-            return riot.createThumbnail(img,
-              img.width,
-              img.height,
-              thumbnailType)
-            })
-            .catch((error) => {
-              console.error("neo: error getting thumbnail", error)
-            })
-            .then((thumbResult) => {
-              return client.uploadContent(thumbResult.thumbnail, {onlyContentUri: false})
-            }).then((response) => {
-              return {
-                thumbnail_url: response.content_uri,
-                thumbnail_info: {
-                  mimetype: thumbnailType
-                }
-              }
-            })
-      } else if (mimeType.startsWith("video/")) {
-        eventType = "m.video"
       } else if (mimeType.startsWith("audio/")) {
         eventType = "m.audio"
       } else {
