@@ -37,7 +37,7 @@ let fileUpload = create({
     return (
       <div className="fileUpload">
         <input type="file" id="fileUpload" multiple ref={this.setFileRef} />
-        <label htmlFor="fileUpload">file</label>
+        <label htmlFor="fileUpload"><img src="/icons/file.svg"/></label>
       </div>
     )
   }
