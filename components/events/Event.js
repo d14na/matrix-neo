@@ -10,7 +10,8 @@ const User = require('./user.js')
 
 const elements = {
   "m.text": require('./text.js'),
-  "m.image": require('./image.js')
+  "m.image": require('./image.js'),
+  "m.video": require('./video.js')
 }
 
 const mxReplyRegex = /^<mx-reply>[\s\S]+<\/mx-reply>/

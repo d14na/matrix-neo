@@ -56,6 +56,7 @@ let App = create({
   },
 
   startClient: function(client) {
+    console.log(client)
     client.on("sync", (state, prevState, data) => {
       if (state == "ERROR") {
       } else if (state == "SYNCING") {
