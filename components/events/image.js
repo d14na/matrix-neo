@@ -5,58 +5,36 @@ const create = require('create-react-class')
 const Promise = require('bluebird')
 const defaultValue = require('default-value')
 
+const mediaLib = require('../../lib/media.js')
+
 const Text = require('./text.js')
 
 let Event = create({
   displayName: "m.image",
 
   getInitialState: function() {
-    let client = this.props.client
-    let hs = this.props.client.baseUrl
     let event = this.props.event
     if (event.content.url == undefined) {
-      return {url: {media: null, thumb: null}}
+      return null
     }
-    console.log(event)
+    return mediaLib.parseEvent(this.props.client, event, 1000, 1000)
+  },
 
-    let h = 1000
-    let w = 1000
-    try {
-      if (event.content.info.h < h) {
-        h = event.content.info.h
-      }
-
-      if (event.content.info.w < w) {
-        w = event.content.info.w
-      }
-
-      if (event.content.info.thumbnail_info < h) {
-        h = event.content.info.thumbnail_info.h
-      }
-
-      if (event.content.info.thumbnail_info < w) {
-        w = event.content.info.thumbnail_info.w
-      }
-    } catch(error) {
-      
-    }
-
-    let media_url = client.mxcUrlToHttp(event.content.url)
-    let thumb_url = client.mxcUrlToHttp(event.content.url, w, h, "scale", false)
-
-    return {
-      url: {
-        media: media_url,
-        thumb: thumb_url
-      }
-    }
+  updateSize: function(e) {
+    console.log("image was loaded")
   },
 
   render: function() {
+    let event = this.props.event
+
+    if (this.state == null) {
+      return "malformed image event: " + event.content.body
+    }
+
     return (
       <div className="body">
-        <a href={this.state.url.media} target="_blank">
-          <img src={this.state.url.thumb}/>
+        <a href={this.state.full} target="_blank">
+          <img src={this.state.thumb} style={{height: this.state.size.h, width: this.state.size.w}}/>
         </a>
         <Text event={this.props.event} nested={true}/>
       </div>

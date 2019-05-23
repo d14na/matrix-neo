@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests --recursive"
   },
   "author": "f0x",
   "license": "AGPL-3.0",
@@ -35,7 +35,6 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-util": "^3.0.8",
     "jdenticon": "^2.1.1",
-    "livereactload": "^4.0.0-beta.2",
     "matrix-js-sdk": "^1.0.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
@@ -46,6 +45,9 @@
     "webpack": "^4.27.1"
   },
   "devDependencies": {
-    "gulp-watch": "^5.0.1"
+    "gulp-watch": "^5.0.1",
+    "mocha-reporter-remote": "^1.7.1",
+    "livereactload": "^4.0.0-beta.2",
+    "mocha": "^6.1.4"
   }
 }
