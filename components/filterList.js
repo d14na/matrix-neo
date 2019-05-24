@@ -16,7 +16,8 @@ let FilterList = create({
   },
 
   select: function(id) {
-    this.setState({selection: id})
+    this.setState({selection: id, filter: ""})
+    this.state.inputRef.value = ""
     this.props.callback(id)
   },
 
