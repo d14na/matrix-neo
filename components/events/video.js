@@ -32,7 +32,6 @@ let Event = create({
         <video controls poster={this.state.thumb} style={{maxHeight: this.state.size.h, maxWidth: this.state.size.w}}>
           <source src={this.state.full}></source>
         </video>
-        {/*<Text body={event.body} nested={true}/>*/}
       </div>
     )
   }

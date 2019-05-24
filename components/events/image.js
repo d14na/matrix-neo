@@ -36,7 +36,6 @@ let Event = create({
         <a href={this.state.full} target="_blank">
           <img src={this.state.thumb} style={{maxHeight: this.state.size.h, maxWidth: this.state.size.w}}/>
         </a>
-        {/*<Text event={this.props.event} nested={true}/>*/}
       </div>
     )
   }
