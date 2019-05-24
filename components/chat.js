@@ -37,7 +37,27 @@ let eventFunctions = {
         plain = sanitize(this.content.formatted_body, {allowedTags: []})
       }
     }
-
+    if (this.type == "m.room.member") {
+      if (this.content.membership == "invite") {
+        plain = `${this.sender} invited ${this.state_key}`
+      } else if (this.content.membership == "join") {
+        plain = `${this.state_key} joined the room`
+      } else if (this.content.membership == "leave") {
+        plain = `${this.state_key} left the room`
+      } else if (this.content.membership == "kick") {
+        plain = `${this.sender} kicked ${this.state_key}`
+      } else if (this.content.membership == "ban") {
+        plain = `${this.sender} banned ${this.state_key}`
+      }
+    }
+    if (this.type == "m.room.avatar") {
+      if (this.content.url.length > 0) {
+        plain = `${this.sender} changed the room avatar`
+      }
+    }
+    if (this.type == "m.room.name") {
+      return `${this.sender} changed the room name to ${this.content.name}`
+    }
     return plain
   }
 }

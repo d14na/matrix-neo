@@ -40,4 +40,4 @@ let Event = create({
 })
 
 
-module.exports = Event;
+module.exports = Event

@@ -7,6 +7,7 @@ const defaultValue = require('default-value')
 const riot = require('../../lib/riot-utils.js')
 
 const User = require('./user.js')
+const stateElement = require('./state.js')
 
 const elements = {
   "m.text": require('./text.js'),
@@ -58,6 +59,8 @@ let Event = create({
         )
       }
       element = React.createElement(defaultValue(elements[msgtype], elements["m.text"]), {formattedEvent: formattedEvent, event: event, client: this.props.client})
+    } else if (["m.room.name", "m.room.member", "m.room.avatar"].includes(event.type)) {
+      element = React.createElement(stateElement, {event: event})
     }
 
     return (
