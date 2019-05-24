@@ -11,19 +11,19 @@ let Event = create({
 
   render: function() {
     let event = this.props.event
+    let formattedEvent = this.props.formattedEvent
 
     let eventBody
 
-    if (event.content.format == "org.matrix.custom.html") {
-      //let html = riot.sanitize(event.content.formatted_body)
+    if (formattedEvent.html) {
       eventBody = <div
-        className={this.props.nested ? "nested" : "body"}
-        dangerouslySetInnerHTML={{__html: this.props.body}}
+        className="body"
+        dangerouslySetInnerHTML={{__html: formattedEvent.body}}
       />
     } else {
       eventBody =
-        <div className={this.props.nested ? "nested" : "body"}>
-          {this.props.body}
+        <div className="body">
+          {formattedEvent.body}
         </div>
     }
 

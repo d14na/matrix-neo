@@ -24,7 +24,6 @@ let Event = create({
     let state = ""
     let reply = ""
     let element = "unsupported event: " + event.type
-    let parsedBody
 
     if (event.local) {
       state = " local"
@@ -32,9 +31,7 @@ let Event = create({
 
     if (event.type == "m.room.message") {
       let msgtype = event.content.msgtype;
-
       let formattedEvent = parseEvent(event)
-      parsedBody = formattedEvent.body
 
       let parsedReply = formattedEvent.parsedReply
       if (parsedReply.isReply) {
@@ -60,7 +57,7 @@ let Event = create({
           </div>
         )
       }
-      element = React.createElement(defaultValue(elements[msgtype], elements["m.text"]), {body: parsedBody, event: event, client: this.props.client})
+      element = React.createElement(defaultValue(elements[msgtype], elements["m.text"]), {formattedEvent: formattedEvent, event: event, client: this.props.client})
     }
 
     return (
