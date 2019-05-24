@@ -10,7 +10,7 @@ const mediaLib = require('../../lib/media.js')
 const Text = require('./text.js')
 
 let Event = create({
-  displayName: "m.image",
+  displayName: "m.video",
 
   getInitialState: function() {
     let event = this.props.event
@@ -20,23 +20,19 @@ let Event = create({
     return mediaLib.parseEvent(this.props.client, event, 1000, 1000)
   },
 
-  updateSize: function(e) {
-    console.log("image was loaded")
-  },
-
   render: function() {
     let event = this.props.event
 
     if (this.state == null) {
-      return "malformed image event: " + event.content.body
+      return "malformed video event: " + event.content.body
     }
 
     return (
       <div className="body">
-        <a href={this.state.full} target="_blank">
-          <img src={this.state.thumb} style={{maxHeight: this.state.size.h, maxWidth: this.state.size.w}}/>
-        </a>
-        {/*<Text event={this.props.event} nested={true}/>*/}
+        <video controls poster={this.state.thumb} style={{maxHeight: this.state.size.h, maxWidth: this.state.size.w}}>
+          <source src={this.state.full}></source>
+        </video>
+        {/*<Text body={event.body} nested={true}/>*/}
       </div>
     )
   }
