@@ -21,7 +21,12 @@ let App = create({
   displayName: "App",
 
   getInitialState: function() {
-    return {rooms: []}
+    return {
+      rooms: [],
+      options: {
+        fallbackMediaRepos: []
+      }
+    }
   },
 
   componentDidMount: function() {
@@ -85,7 +90,7 @@ let App = create({
     }
     return (
       <>
-        <Sidebar client={this.state.client} rooms={this.state.rooms} selectRoom={(roomId) => {this.setState({roomId: roomId})}}/>
+        <Sidebar options={this.state.options} client={this.state.client} rooms={this.state.rooms} selectRoom={(roomId) => {this.setState({roomId: roomId})}}/>
         <Chat client={this.state.client} roomId={this.state.roomId}/>
       </>
     )
