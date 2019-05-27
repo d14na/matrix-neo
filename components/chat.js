@@ -125,7 +125,7 @@ let chat = create({
 
     let events = []
     if (room.timeline.length > 0) {
-      room.timeline.forEach((MatrixEvent) => {
+      room.getLiveTimeline().getEvents().forEach((MatrixEvent) => {
         let event = MatrixEvent.event;
         event = Object.assign(event, eventFunctions)
         if (event.user_id != null) { // localecho messages
