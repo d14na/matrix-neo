@@ -13,6 +13,7 @@ const Event = require('./events/Event.js')
 const Info = require('./info.js')
 const Input = require('./input.js')
 const User = require('./events/user.js')
+const Loading = require('./loading.js')
 
 jdenticon.config = {
     lightness: {
@@ -100,6 +101,9 @@ let chat = create({
   },
 
   paginateBackwards: function() {
+    if (this.state.loading) {
+      return
+    }
     let client = this.props.client
     client.paginateEventTimeline(client.getRoom(this.props.roomId).getLiveTimeline(), {backwards: true}).then(() => {
       this.setState({loading: false})
@@ -136,8 +140,6 @@ let chat = create({
     let liveTimeline = room.getLiveTimeline()
     let liveTimelineEvents = liveTimeline.getEvents()
 
-    // fetch more backlog if we don't have enough events
-
     let events = []
     if (liveTimelineEvents.length > 0) {
       liveTimelineEvents.forEach((MatrixEvent) => {
@@ -160,7 +162,7 @@ let chat = create({
       messageGroups.groups.push(messageGroups.current)
 
       events = messageGroups.groups.map((events, id) => {
-        return <EventGroup key={`${this.props.roomId}-${id}`} events={events} client={this.props.client} room={room} onReplyClick={this.onReplyClick}/>
+        return <EventGroup key={`${this.props.roomId}-${events[0].event_id}`} events={events} client={this.props.client} room={room} onReplyClick={this.onReplyClick}/>
       })
     }
     //TODO: replace with something that only renders events in view
@@ -169,12 +171,12 @@ let chat = create({
         <Info room={room} />
         <div className="chat" ref={this.setRef}>
           <div className="events">
-            <button onClick={this.paginateBackwards}>
-              load older messages</button>
-            {this.state.loading &&
-            <div className="loading">
-              LOADING
-            </div>}
+            <div className="paginateBackwards" onClick={this.paginateBackwards}>
+              {this.state.loading ?
+                <Loading/> :
+                <span>load older messages</span>
+              }
+            </div>
             {events}
           </div>
         </div>
