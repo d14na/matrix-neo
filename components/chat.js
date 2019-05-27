@@ -67,7 +67,8 @@ let chat = create({
 
   getInitialState: function() {
     return {
-      ref: null
+      ref: null,
+      loading: false
     }
   },
 
@@ -98,6 +99,14 @@ let chat = create({
     this.setState({replyEvent: e})
   },
 
+  paginateBackwards: function() {
+    let client = this.props.client
+    client.paginateEventTimeline(client.getRoom(this.props.roomId).getLiveTimeline(), {backwards: true}).then(() => {
+      this.setState({loading: false})
+    })
+    this.setState({loading: true})
+  },
+
   render: function() {
     let client = this.props.client
     let empty = (
@@ -124,9 +133,14 @@ let chat = create({
     // if the sender is the same, add it to the 'current' messageGroup, if not,
     // push the old one to 'groups' and start with a new array.
 
+    let liveTimeline = room.getLiveTimeline()
+    let liveTimelineEvents = liveTimeline.getEvents()
+
+    // fetch more backlog if we don't have enough events
+
     let events = []
-    if (room.timeline.length > 0) {
-      room.getLiveTimeline().getEvents().forEach((MatrixEvent) => {
+    if (liveTimelineEvents.length > 0) {
+      liveTimelineEvents.forEach((MatrixEvent) => {
         let event = MatrixEvent.event;
         event = Object.assign(event, eventFunctions)
         if (event.sender == null) { // localecho messages
@@ -155,10 +169,12 @@ let chat = create({
         <Info room={room} />
         <div className="chat" ref={this.setRef}>
           <div className="events">
-            <button onClick={() => {
-                this.props.client.paginateEventTimeline(room.getLiveTimeline(), {backwards: true})
-              }}>
+            <button onClick={this.paginateBackwards}>
               load older messages</button>
+            {this.state.loading &&
+            <div className="loading">
+              LOADING
+            </div>}
             {events}
           </div>
         </div>
