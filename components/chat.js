@@ -99,6 +99,7 @@ let chat = create({
   },
 
   render: function() {
+    let client = this.props.client
     let empty = (
       <div className="main">
       </div>
@@ -108,7 +109,7 @@ let chat = create({
       return empty
     }
 
-    let room = this.props.client.getRoom(this.props.roomId)
+    let room = client.getRoom(this.props.roomId)
     if (room == null) {
       return empty
     }
@@ -128,7 +129,7 @@ let chat = create({
       room.getLiveTimeline().getEvents().forEach((MatrixEvent) => {
         let event = MatrixEvent.event;
         event = Object.assign(event, eventFunctions)
-        if (event.user_id != null) { // localecho messages
+        if (event.sender == null) { // localecho messages
           event.sender = event.user_id
           event.local = true
         }
@@ -154,10 +155,14 @@ let chat = create({
         <Info room={room} />
         <div className="chat" ref={this.setRef}>
           <div className="events">
+            <button onClick={() => {
+                this.props.client.paginateEventTimeline(room.getLiveTimeline(), {backwards: true})
+              }}>
+              load older messages</button>
             {events}
           </div>
         </div>
-        <Input client={this.props.client} roomId={this.props.roomId} replyEvent={this.state.replyEvent} onReplyClick={this.onReplyClick}/>
+        <Input client={client} roomId={this.props.roomId} replyEvent={this.state.replyEvent} onReplyClick={this.onReplyClick}/>
       </div>
     )
   }
