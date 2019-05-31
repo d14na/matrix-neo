@@ -2,9 +2,9 @@
 <a href="https://liberapay.com/f0x/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a>  
 
 A lightweight [Matrix](https://matrix.org) webclient, with basic functionality.  
-The latest build is hosted at [neo.lain.haus/neo](https://neo.lain.haus/neo)  
+The latest build is hosted at [neo.pixie.town/app](https://neo.pixie.town/app)  
 
-<img src="https://neo.lain.haus/media/screenshot-iris.png" alt="Screenshot">
+<img src="https://neo.pixie.town/media/screenshot-iris.png" alt="Screenshot">
 
 ## Building
 Keep in mind it's not quite useable currently;  
