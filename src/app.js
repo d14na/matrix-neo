@@ -15,8 +15,6 @@ const Chat = require('./components/chat.js')
 // avatar tilt
 // incoming/outgoing message alignment (split)
 
-
-
 let App = create({
   displayName: "App",
 

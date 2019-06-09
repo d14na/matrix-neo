@@ -15,7 +15,7 @@ const sourcemaps = require('gulp-sourcemaps')
 const budo = require('budo')
 const babelify = require('babelify')
 
-const cssFiles = 'public/scss/**/*.?(s)css'
+const cssFiles = 'src/scss/**/*.?(s)css'
 
 let css = gulp.src(cssFiles)
     .pipe(sass())
@@ -23,7 +23,7 @@ let css = gulp.src(cssFiles)
     .pipe(gulp.dest('build'))
 
 gulp.task('watch', function(cb) {
-  budo("app.js", {
+  budo("src/app.js", {
     live: true,
     dir: "build",
     port: 3000,
@@ -47,7 +47,7 @@ gulp.task("sass", function() {
 })
 
 gulp.task("assets", function() {
-  return gulp.src(["public/**/*", "!public/scss", "!public/scss/**/*"])
+  return gulp.src(["src/assets/**/*"])
     .pipe(gulpIf('*.+(png|jpg|jpeg|gif|svg)',
       cache(imagemin({
         interlaced: true
@@ -57,7 +57,7 @@ gulp.task("assets", function() {
 })
 
 gulp.task('js', function() {
-  return gulp.src(['app.js', "components/**/*"])
+  return gulp.src(['src/app.js', "src/components/**/*"])
     .pipe(babel({
       presets: [
         ['@babel/env', {
@@ -70,14 +70,14 @@ gulp.task('js', function() {
 
 gulp.task('js', function() {
   let b = browserify({
-    entries: 'app.js',
+    entries: 'src/app.js',
     debug: false,
     transform: [babelify.configure({
       presets: ['@babel/preset-env', '@babel/preset-react']
     })]
   })
   return b.bundle()
-    .pipe(source('app.js'))
+    .pipe(source('src/app.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(gulp.dest('build'))
